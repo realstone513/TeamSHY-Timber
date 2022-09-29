@@ -1,27 +1,56 @@
 ﻿#include <SFML/Graphics.hpp>
+#include "ResourceManager.h"
+#include "SpriteGameObject.h"
+#include <list>
+#include "Player.h"
+#include "InputManager.h"
+
+
+using namespace sf;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    VideoMode vm(1920, 1080);
+    RenderWindow window(vm, "timber", Style::Default);
+    std::list<SpriteGameObject*> gameObjectList;
+    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
 
-    while (window.isOpen())
+    Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"),1);
+    gameObjectList.push_back(player1);
+    Player* player2 = new Player(RMI->GetTexture("graphics/player_red.png"),2);
+    gameObjectList.push_back(player2);
+    
+    for (auto i : gameObjectList)
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+        i->Init();
+    }
+    Clock clock;
 
-        window.clear();
-        window.draw(shape);
+    while (true)
+    {
+        Time dt = clock.restart(); //이전 업데이트 시간과 현재 업데이트 시간 차이 기록
+
+        Event ev;
+        InputManager::ClearInput();
+        while (window.pollEvent(ev))
+        {
+            InputManager::UpdateInput(ev);
+        }
+        float deltaTime = dt.asSeconds(); //isPause ? 0.f : dt.asSeconds();
+        for (auto i : gameObjectList)
+        {
+            i->Update(deltaTime);
+        }
+        for (auto i : gameObjectList)
+        {
+            i->Draw(window);
+        }
         window.display();
     }
-
+    
     return 0;
 }
+
 
 /*#include <SFML/Graphics.hpp>
 #include <vector>
