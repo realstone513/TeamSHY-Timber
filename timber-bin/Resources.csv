@@ -1,0 +1,16 @@
+id,type
+graphics/background.png,0
+graphics/bee.png,0
+graphics/cloud.png,0
+graphics/tree.png,0
+graphics/player_red.png,0
+graphics/player_yellow.png,0
+graphics/player_green.png,0
+graphics/rip.png,0
+graphics/axe.png,0
+graphics/branch.png,0
+graphics/log.png,0
+fonts/KOMIKAP_.ttf,1
+sound/out_of_time.wav,2
+sound/death.wav,2
+sound/chop.wav,2
