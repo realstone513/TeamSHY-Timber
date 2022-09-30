@@ -10,11 +10,21 @@ using namespace std;
 class UIManager
 {
 private:
-	map<string, Text*> textMap;
-	map<string, Shape*> shapeMap;
+	map<string, Text*>		textMap;
+	map<string, Shape*>		shapeMap;
+	Font&					font;
 
 public:
-	UIManager();
+	UIManager(Font& _font);
 	~UIManager();
 
+	void Init();
+	void Release();
+
+	void SetTextUI(
+		string textString,
+		string name = "",
+		int charSize = 75,
+		Color textColor = Color::White);
+	Text* GetTextUI(string name) const;
 };
