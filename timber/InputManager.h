@@ -17,10 +17,6 @@ private:
 	static vector<bool> ingList;
 	static vector<bool> upList;
 
-	static vector<Keyboard::Key> downList2;
-	static vector<Keyboard::Key> ingList2;
-	static vector<Keyboard::Key> upList2;
-
 public:
 	static void ClearInput();
 	static void UpdateInput(Event& ev);
@@ -28,12 +24,4 @@ public:
 	static bool GetKeyDown(Keyboard::Key key);
 	static bool GetKey(Keyboard::Key key);
 	static bool GetKeyUp(Keyboard::Key key);
-
-	// sfml 이벤트 안쓰고 만들기
-	static void ClearInput2();
-	static void UpdateInput2();
-
-	static bool GetKeyDown2(Keyboard::Key key);
-	static bool GetKey2(Keyboard::Key key);
-	static bool GetKeyUp2(Keyboard::Key key);
 };
