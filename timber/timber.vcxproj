@@ -149,11 +149,13 @@
     <ClCompile Include="..\..\TeamSHY-timber\timber\ResourceManager.cpp" />
     <ClCompile Include="..\..\TeamSHY-timber\timber\SpriteGameObject.cpp" />
     <ClCompile Include="..\..\TeamSHY-timber\timber\Utils.cpp" />
+    <ClCompile Include="EffectLog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\TeamSHY-timber\timber\InputManager.h" />
@@ -162,10 +164,12 @@
     <ClInclude Include="..\..\TeamSHY-timber\timber\Singleton.h" />
     <ClInclude Include="..\..\TeamSHY-timber\timber\SpriteGameObject.h" />
     <ClInclude Include="..\..\TeamSHY-timber\timber\Utils.h" />
+    <ClInclude Include="EffectLog.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player2.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
