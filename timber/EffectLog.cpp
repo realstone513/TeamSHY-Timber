@@ -53,6 +53,7 @@ void EffectLog::Update(float dt)
 void EffectLog::Draw(RenderWindow& window)
 {
 	SpriteGameObject::Draw(window);
+
 }
 
 bool EffectLog::GetActive()

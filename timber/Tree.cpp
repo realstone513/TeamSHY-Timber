@@ -2,7 +2,7 @@
 #include "InputManager.h"
 //log 텍스쳐 출력이 안됨
 Tree::Tree(Texture& texTree, int num)
-	:SpriteGameObject(texTree), texTree(texTree), treeNum(num)
+	:SpriteGameObject(texTree), texTree(texTree), treeNum(num),pos(Sides::Right)
 {
 	
 	for (int i = 0; i < 100; ++i)
@@ -91,6 +91,11 @@ void Tree::Update(float dt)
 void Tree::Draw(RenderWindow& window)
 {
 	SpriteGameObject::Draw(window);
+	for (auto log : useLogs)
+	{
+		log->Draw(window);
+	}
+
 }
 
 void Tree::ShowLogEffect()
