@@ -16,9 +16,9 @@ int main()
     std::list<SpriteGameObject*> gameObjectList;
     gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
 
-    Tree* tree1 = new Tree(RMI->GetTexture("graphics/tree.png"),1);
+    Tree* tree1 = new Tree(RMI->GetTexture("graphics/2Ptree.png"),1);
     gameObjectList.push_back(tree1);
-    Tree* tree2 = new Tree(RMI->GetTexture("graphics/tree.png"),2);
+    Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"),2);
     gameObjectList.push_back(tree2);
     Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"),1);
     gameObjectList.push_back(player1);

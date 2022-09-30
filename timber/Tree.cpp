@@ -7,7 +7,7 @@ Tree::Tree(Texture& texTree, int num)
 	
 	for (int i = 0; i < 100; ++i)
 	{
-		auto log = new EffectLog(RMI->GetTexture("graphics/log.png"), 5.f);
+		auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
 		unuseLogs.push_back(log);
 	}
 }
@@ -22,11 +22,11 @@ void Tree::Init()
 	SetOrigin(Origins::BC);
 	if (treeNum == 1)
 	{
-		SetPosition(Vector2f({ 500, 1000 }));
+		SetPosition(Vector2f({ 500, 900 }));
 	}
 	else
 	{
-		SetPosition(Vector2f({ 1400, 1000 }));
+		SetPosition(Vector2f({ 1400, 900 }));
 	}
 	
 }
