@@ -4,6 +4,13 @@
 
 using namespace sf;
 
+enum class Sides
+{
+	Left,
+	Right,
+	None,
+};
+
 class SpriteGameObject
 {
 protected:

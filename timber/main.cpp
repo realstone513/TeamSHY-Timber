@@ -1,11 +1,13 @@
-﻿#include <SFML/Graphics.hpp>
+﻿#include <iostream>
+#include <SFML/Graphics.hpp>
 #include "ResourceManager.h"
 #include "SpriteGameObject.h"
 #include <list>
 #include "Player.h"
 #include "InputManager.h"
+#include "Tree.h"
 
-
+using namespace std;
 using namespace sf;
 
 int main()
@@ -14,12 +16,31 @@ int main()
     RenderWindow window(vm, "timber", Style::Default);
     std::list<SpriteGameObject*> gameObjectList;
     gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    int gamemode;
+    cin >> gamemode;
+    if (gamemode ==1)
+    {
+        Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
+        tree->SetPosition({ 960, 900 });
+        gameObjectList.push_back(tree);
+        Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"), gamemode, 1, tree->GetPosition());
+        gameObjectList.push_back(player1);
+    }
+    else
+    {
+        Tree* tree1 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 1);
+        tree1->SetPosition({ 480, 900 });
+        gameObjectList.push_back(tree1);
+        Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 2);
+        tree2->SetPosition({ 1440, 900 });
+        gameObjectList.push_back(tree2);
+        Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"), gamemode, 1, tree1->GetPosition());
+        gameObjectList.push_back(player1);
+        Player* player2 = new Player(RMI->GetTexture("graphics/player_red.png"), gamemode, 2, tree2->GetPosition());
+        gameObjectList.push_back(player2);
+    }
+   
 
-    Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"),1);
-    gameObjectList.push_back(player1);
-    Player* player2 = new Player(RMI->GetTexture("graphics/player_red.png"),2);
-    gameObjectList.push_back(player2);
-    
     for (auto i : gameObjectList)
     {
         i->Init();
