@@ -164,7 +164,7 @@ void Tree::Draw(RenderWindow& window)
 	}
 
 }
-
+//22
 void Tree::SetFlipX(bool flip)
 {
 	SpriteGameObject::SetFlipX(flip);
