@@ -1,4 +1,5 @@
 #include "Tree.h"
+#include "InputManager.h"
 
 Tree::Tree(Texture& texTree, int num)
 	:SpriteGameObject(texTree), texTree(texTree), treeNum(num)
@@ -63,6 +64,28 @@ void Tree::Update(float dt)
 			++it;
 		}
 	}
+	if (treeNum == 1)
+	{
+		if (InputManager::GetKeyDown(Keyboard::A))
+		{
+			ShowLogEffect();
+		}
+		if (InputManager::GetKeyDown(Keyboard::D))
+		{
+			ShowLogEffect();
+		}
+	}
+	else
+	{
+		if (InputManager::GetKeyDown(Keyboard::Left))
+		{
+			ShowLogEffect();
+		}
+		if (InputManager::GetKeyDown(Keyboard::Right))
+		{
+			ShowLogEffect();
+		}
+	}
 }
 
 void Tree::Draw(RenderWindow& window)
@@ -85,8 +108,9 @@ void Tree::ShowLogEffect()
 	float aForce = pos == Sides::Left ? 360 * 2 : -360 * 2;
 
 
-	Vector2f pos = centerPos;
-	pos.y = axe.getPosition().y;//yÃà µµ³¢³ôÀÌ
+	Vector2f pos({ 900,500 });
+	//	= centerPos;
+	//pos.y = axe.getPosition().y;//yÃà µµ³¢³ôÀÌ
 	log->SetPosition(pos);
 	log->SetOrigin(Origins::MC);
 	log->Fire(force, aForce);

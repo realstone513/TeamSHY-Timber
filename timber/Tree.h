@@ -18,7 +18,7 @@ class Tree : public SpriteGameObject
 {
 private:
 	Texture& texTree;
-	Texture& texLog;
+	Texture texLog;
 	Sides pos;
 	int treeNum;
 	std::list<EffectLog*> unuseLogs;
