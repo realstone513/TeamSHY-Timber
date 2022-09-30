@@ -1,8 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <vector>
-#include <conio.h>
-#include <windows.h>
 
 // static 함수를 이용해서
 // 키보드 및 마우스 입력을 검사할 수 있는 클래스
