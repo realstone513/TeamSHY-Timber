@@ -24,7 +24,7 @@ int main()
     gameObjectList.push_back(player1);
     Player* player2 = new Player(RMI->GetTexture("graphics/player_red.png"),2);
     gameObjectList.push_back(player2);
-    
+
     for (auto i : gameObjectList)
     {
         i->Init();

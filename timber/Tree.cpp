@@ -1,13 +1,13 @@
 #include "Tree.h"
 #include "InputManager.h"
-
+//log 텍스쳐 출력이 안됨
 Tree::Tree(Texture& texTree, int num)
 	:SpriteGameObject(texTree), texTree(texTree), treeNum(num)
 {
-	sprite.setTexture(texLog);
+	
 	for (int i = 0; i < 100; ++i)
 	{
-		auto log = new EffectLog(texLog, 5.f);
+		auto log = new EffectLog(RMI->GetTexture("graphics/log.png"), 5.f);
 		unuseLogs.push_back(log);
 	}
 }
