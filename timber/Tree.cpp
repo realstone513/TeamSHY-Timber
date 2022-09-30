@@ -1,14 +1,31 @@
 #include "Tree.h"
+#include "Player.h"
 #include "InputManager.h"
 //log 텍스쳐 출력이 안됨
-Tree::Tree(Texture& texTree, int num)
-	:SpriteGameObject(texTree), texTree(texTree), treeNum(num),pos(Sides::Right)
+Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
+	:SpriteGameObject(texTree), texTree(texTree), side(Sides::Right), GameMode(gamemode), is1P2P(is1P2P)
 {
-	
 	for (int i = 0; i < 100; ++i)
 	{
-		auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
-		unuseLogs.push_back(log);
+		if (GameMode == 1)
+		{
+			auto log = new EffectLog(RMI->GetTexture("graphics/log.png"), 5.f);
+			unuseLogs.push_back(log);
+		}
+		else
+		{
+			if (GameMode == 1)
+			{
+				auto log = new EffectLog(RMI->GetTexture("graphics/2log.png"), 5.f);
+				unuseLogs.push_back(log);
+			}
+			else
+			{
+				auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
+				unuseLogs.push_back(log);
+			}
+
+		}
 	}
 }
 
@@ -18,16 +35,8 @@ Tree::~Tree()
 
 void Tree::Init()
 {
-	sprite.setTexture(texTree);
+	sprite.setTexture(texTree,true);
 	SetOrigin(Origins::BC);
-	if (treeNum == 1)
-	{
-		SetPosition(Vector2f({ 500, 900 }));
-	}
-	else
-	{
-		SetPosition(Vector2f({ 1400, 900 }));
-	}
 	
 }
 
@@ -64,28 +73,86 @@ void Tree::Update(float dt)
 			++it;
 		}
 	}
-	if (treeNum == 1)
+	if (GameMode == 1)
 	{
-		if (InputManager::GetKeyDown(Keyboard::A))
+		if (!isChop)
 		{
-			ShowLogEffect();
+			if (InputManager::GetKeyDown(Keyboard::A))
+			{
+				ShowLogEffect(Sides::Left);
+			}
+			if (InputManager::GetKeyDown(Keyboard::D))
+			{
+				ShowLogEffect(Sides::Right);
+			}
 		}
-		if (InputManager::GetKeyDown(Keyboard::D))
+		else
 		{
-			ShowLogEffect();
+			if (side == Sides::Left && InputManager::GetKeyUp(Keyboard::A))
+			{
+				isChop = false;
+			}
+			if (side == Sides::Right && InputManager::GetKeyUp(Keyboard::D))
+			{
+				isChop = false;
+			}
 		}
 	}
 	else
 	{
-		if (InputManager::GetKeyDown(Keyboard::Left))
+		if (is1P2P == 1)
 		{
-			ShowLogEffect();
+			if (!isChop)
+			{
+				if (InputManager::GetKeyDown(Keyboard::A))
+				{
+					ShowLogEffect(Sides::Left);
+				}
+				if (InputManager::GetKeyDown(Keyboard::D))
+				{
+					ShowLogEffect(Sides::Right);
+				}
+			}
+			else
+			{
+				if (side == Sides::Left && InputManager::GetKeyUp(Keyboard::A))
+				{
+					isChop = false;
+				}
+				if (side == Sides::Right && InputManager::GetKeyUp(Keyboard::D))
+				{
+					isChop = false;
+				}
+			}
+
 		}
-		if (InputManager::GetKeyDown(Keyboard::Right))
+		else
 		{
-			ShowLogEffect();
+			if (!isChop)
+			{
+				if (InputManager::GetKeyDown(Keyboard::Left))
+				{
+					ShowLogEffect(Sides::Left);
+				}
+				if (InputManager::GetKeyDown(Keyboard::Right))
+				{
+					ShowLogEffect(Sides::Right);
+				}
+			}
+			else
+			{
+				if (side == Sides::Left && InputManager::GetKeyUp(Keyboard::Left))
+				{
+					isChop = false;
+				}
+				if (side == Sides::Right && InputManager::GetKeyUp(Keyboard::Right))
+				{
+					isChop = false;
+				}
+			}
 		}
 	}
+	
 }
 
 void Tree::Draw(RenderWindow& window)
@@ -98,8 +165,16 @@ void Tree::Draw(RenderWindow& window)
 
 }
 
-void Tree::ShowLogEffect()
+void Tree::SetFlipX(bool flip)
 {
+	SpriteGameObject::SetFlipX(flip);
+}
+
+
+void Tree::ShowLogEffect(Sides side)
+{
+	isChop = true;
+	this->side = side;
 	if (unuseLogs.empty())
 		return;
 
@@ -108,13 +183,17 @@ void Tree::ShowLogEffect()
 	useLogs.push_back(log);
 
 	Vector2f force;
-	force.x = pos == Sides::Left ? 1500 : -1500;
-	force.y = -1500;
-	float aForce = pos == Sides::Left ? 360 * 2 : -360 * 2;
+	int forceRanX = Utils::Range(300, 800);
+	force.x = side == Sides::Left ? forceRanX : -forceRanX;
+	force.y = -800;
+	float aForceRan = Utils::Range(360, 1800);
+	float aForce = side == Sides::Left ? aForceRan : -aForceRan;
 
 
-	Vector2f pos({ 900,500 });
-	//	= centerPos;
+	Vector2f pos;
+	
+	pos.x = GetPosition().x;
+	pos.y = 840;
 	//pos.y = axe.getPosition().y;//y축 도끼높이
 	log->SetPosition(pos);
 	log->SetOrigin(Origins::MC);
