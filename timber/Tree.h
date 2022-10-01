@@ -38,5 +38,3 @@ public:
 	void ShowLogEffect(Sides side);
 	void UpdateBranches();
 };
-
-

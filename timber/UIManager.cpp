@@ -1,5 +1,4 @@
 #include "UIManager.h"
-<<<<<<< HEAD
 
 UIManager::UIManager(Font& _font)
 	: font(_font)
@@ -52,5 +51,3 @@ Text* UIManager::GetTextUI(string name) const
 		return nullptr;
 	return textMap.find(name)->second;
 }
-=======
->>>>>>> d148df034bed63e75925ac500a78b7377e25d359
