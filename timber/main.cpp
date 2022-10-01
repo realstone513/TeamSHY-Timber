@@ -21,19 +21,20 @@ int main()
     
 	VideoMode vm(1920, 1080);
 	RenderWindow window(vm, "timber", Style::Default);
-    list<SpriteGameObject*> gameObjectList;
-    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
     Vector2u size = window.getSize();
+   /* list<SpriteGameObject*> gameObjectList;
+    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));*/
     
-    //charcter Menu
-    list<SpriteGameObject*> charcterList;
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(800, 400)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));
-    for ( auto i : charcterList )
-    {
-        i->setScale(2, 2);
-    }
+    
+    ////charcter Menu
+    //list<SpriteGameObject*> charcterList;
+    //charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
+    //charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(800, 400)));
+    //charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));
+    //for ( auto i : charcterList )
+    //{
+    //    i->setScale(2, 2);
+    //}
    
     //UI
     UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"));
@@ -69,14 +70,17 @@ int main()
     int gamemode = 1;
     int onePcharcter = 0;
     int twoPcharcter = 0;
-    int onePlayready = 0;
+    bool onePlayready = false;
+    bool twoPlayready = false;
     int ready = 0;
+
 
     while ( window.isOpen() )
     {
         Time dt = clock.restart();
         Event ev;
-
+        list<SpriteGameObject*> gameObjectList;
+        gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
         //Title Scene
         while ( Title )
         {
@@ -186,6 +190,15 @@ int main()
         //Character select
         while ( SelectCharacter )
         {
+            //charcter Menu
+            list<SpriteGameObject*> charcterList;
+            charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
+            charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(800, 400)));
+            charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));
+            for ( auto i : charcterList )
+            {
+                i->setScale(2, 2);
+            }
             Time dt = clock.restart();
             Event ev;
             InputManager::ClearInput();
@@ -208,6 +221,8 @@ int main()
                     SelectMenu = true;
                     onePcharcter = 0;
                     twoPcharcter = 0;
+                    onePlayready = false;
+                    twoPlayready = false;
                 }
                 
             }
@@ -242,22 +257,28 @@ int main()
                 }
             }
             
-            if ( InputManager::GetKeyDown(Keyboard::Return) && gamemode != 0 )
+            if ( InputManager::GetKeyDown(Keyboard::Return) )
             {
                 ready += 1;
-                if ( gamemode == 1 && ready == 1 )
-                {
-                    SelectCharacter = false;
-                    PlayGame = true;
-                }
-                else if ( gamemode == 2 && ready == 2 )
-                {
-                    SelectCharacter = false;
-                    PlayGame = true;
-                }
+                onePlayready = true;
+                
                 
             }
-
+            if ( InputManager::GetKeyDown(Keyboard::Space) && gamemode == 2 ) 
+            {
+                ready += 1;
+                twoPlayready = true;
+            }
+            if ( gamemode == 1 && onePlayready )
+            {
+                SelectCharacter = false;
+                PlayGame = true;
+            }
+            else if ( gamemode == 2 && onePlayready && twoPlayready )
+            {
+                SelectCharacter = false;
+                PlayGame = true;
+            }
             float deltaTime = dt.asSeconds();
 
             //Update
@@ -369,6 +390,7 @@ int main()
                 }
                 if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
                 {
+
                     ready = 0;
                     gamemode = 1;
                     Title = true;
@@ -376,8 +398,9 @@ int main()
                     SelectCharacter = false;
                     PlayGame = false;
                     window.clear();
+                    break;
                 }
-                float deltaTime = dt.asSeconds(); //isPause ? 0.f : dt.asSeconds();
+                float deltaTime = dt.asSeconds();
                 window.clear();
                 for ( auto i : gameObjectList )
                 {
@@ -390,13 +413,13 @@ int main()
                 window.display();
             }
         } 
-
+        for ( auto go : gameObjectList )
+        {
+            go->Release();
+            delete go;
+        }
+        gameObjectList.clear();
     }
-    for ( auto go : gameObjectList )
-    {
-        go->Release();
-        delete go;
-    }
-    gameObjectList.clear();
+    
     return 0;
 }
