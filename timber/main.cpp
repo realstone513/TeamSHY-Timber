@@ -18,7 +18,7 @@ using namespace sf;
 
 int main()
 {
-   
+    
 	VideoMode vm(1920, 1080);
 	RenderWindow window(vm, "timber", Style::Default);
     list<SpriteGameObject*> gameObjectList;
@@ -69,6 +69,7 @@ int main()
     int gamemode = 1;
     int onePcharcter = 0;
     int twoPcharcter = 0;
+    int onePlayready = 0;
     int ready = 0;
 
     while ( window.isOpen() )
@@ -329,12 +330,13 @@ int main()
         //Game Scene
         if( PlayGame && (gamemode == 1 || gamemode == 2))
         {
+            string charcterIndex[3] = { "graphics/player_green.png","graphics/player_red.png","graphics/player_yellow.png" };
             if ( gamemode == 1 )
 			{
 				Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
 				tree->SetPosition({ 960, 900 });
 				gameObjectList.push_back(tree);
-				Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"), gamemode, 1, tree->GetPosition());
+				Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
 				gameObjectList.push_back(player1);
 			}
 			else
@@ -345,9 +347,9 @@ int main()
 				Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 2);
 				tree2->SetPosition({ 1440, 900 });
 				gameObjectList.push_back(tree2);
-				Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"), gamemode, 1, tree1->GetPosition());
+				Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree1->GetPosition());
 				gameObjectList.push_back(player1);
-				Player* player2 = new Player(RMI->GetTexture("graphics/player_red.png"), gamemode, 2, tree2->GetPosition());
+				Player* player2 = new Player(RMI->GetTexture(charcterIndex[twoPcharcter]), gamemode, 2, tree2->GetPosition());
 				gameObjectList.push_back(player2);
 			}
             for ( auto i : gameObjectList )
