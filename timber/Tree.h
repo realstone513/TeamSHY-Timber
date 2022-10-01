@@ -2,7 +2,9 @@
 #include "SpriteGameObject.h"
 #include "ResourceManager.h"
 #include "EffectLog.h"
+#include "Branch.h"
 #include <list>
+#include <vector>
 
 
 using namespace std;
@@ -19,6 +21,10 @@ private:
 
 	std::list<EffectLog*> unuseLogs;
 	std::list<EffectLog*> useLogs;
+
+	vector<Branch*> branches;
+	vector<Vector2f> branchPosArr;
+	int currentBranche;
 public:
 	Tree(Texture& texTree,int gamemode, int is1P2P);
 	~Tree();
@@ -30,6 +36,7 @@ public:
 	virtual void SetFlipX(bool flip);
 
 	void ShowLogEffect(Sides side);
+	void UpdateBranches();
 };
 
 

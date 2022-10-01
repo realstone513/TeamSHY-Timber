@@ -12,6 +12,12 @@ graphics/branch.png,0
 graphics/log.png,0
 graphics/2Plog.png,0
 graphics/2Ptree.png,0
+graphics/1P_log(b)_L.png,0
+graphics/1P_log(b)_R.png,0
+graphics/1P_log(b)_N.png,0
+graphics/2P_log(b)_L.png,0
+graphics/2P_log(b)_R.png,0
+graphics/2P_log(b)_N.png,0
 fonts/KOMIKAP_.ttf,1
 sound/out_of_time.wav,2
 sound/death.wav,2
