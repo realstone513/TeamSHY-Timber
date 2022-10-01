@@ -15,12 +15,11 @@ using namespace sf;
 
 int main()
 {
-    //Vector2u windowSize = window.getSize();
+   
 	VideoMode vm(1920, 1080);
 	RenderWindow window(vm, "timber", Style::Default);
 	list<SpriteGameObject*> gameObjectList;
     auto resourceMgr = ResourceManager::GetInstance();
-    
     gameObjectList.push_back(new SpriteGameObject(*resourceMgr->GetTexture("graphics/background.png")));
     //
 
@@ -29,19 +28,28 @@ int main()
     font.loadFromFile("fonts/KOMIKAP_.ttf");
 
     Text messageText;
+    Text titleText;
     messageText.setFont(font);
+    titleText.setFont(font);
     messageText.setCharacterSize(75);
+    titleText.setCharacterSize(225);
     messageText.setFillColor(Color::White);
+    titleText.setFillColor(Color::Cyan);
     messageText.setString("Press Enter to start!");
+    titleText.setString("< Timber >");
     Vector2u size = window.getSize();
-    // messageText.setPosition(size.x * 0.5f, size.y * 0.5f);
+    messageText.setPosition(size.x * 0.5f, size.y * 0.5f);
+    titleText.setPosition(size.x * 0.5f, size.y * 0.25f);
+    Utils::SetOrigin(messageText, Origins::MC);
+    Utils::SetOrigin(titleText, Origins::TC);
     //
     Text menuText;
     menuText.setFont(font);
     menuText.setCharacterSize(75);
     menuText.setFillColor(Color::White);
-    menuText.setString("Menu");
+    menuText.setString("Menu\n1P\n2P");
     menuText.setPosition(size.x * 0.5f, size.y * 0.5f);
+    Utils::SetOrigin(menuText, Origins::MC);
     //
 
     Clock clock;
@@ -96,6 +104,7 @@ int main()
             {
                 go->Draw(window);
             }
+            window.draw(titleText);
             window.draw(messageText);
             window.display();
         }
