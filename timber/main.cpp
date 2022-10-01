@@ -23,16 +23,6 @@ int main()
 
     Vector2u size = window.getSize();
 
-    //charcter Menu
-    list<SpriteGameObject*> charcterList;
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(800, 400)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));
-    for ( auto i : charcterList )
-    {
-        i->setScale(2, 2);
-    }
-   
     //Title
     um.SetTextUI("Press Enter to start!", "press enter");
     um.GetTextUI("press enter")->setPosition({ 500, 600 });
@@ -51,34 +41,32 @@ int main()
     um.SetTextUI("->", "arrow");
     um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.5f });
     //Character Select
-    um.SetTextUI("^", "1pArrow", 100, Color::Red);
+    um.SetTextUI("1P", "1pArrow", 100, Color::Red);
     um.GetTextUI("1pArrow")->setPosition({ size.x * 0.25f, size.y * 0.5f });
-    um.SetTextUI("^", "2pArrow", 100, Color::Green);
+    um.SetTextUI("2P", "2pArrow", 100, Color::Green);
     um.GetTextUI("2pArrow")->setPosition({ size.x * 0.5f, size.y * 0.5f });
 
     //instance
     Clock clock;
-    //game 분기
-    bool Title = true;
-    bool run = true;
-    int gamemode = 0;
-
-    float duration = 4.0f;
-    float timer = duration;
-
-    bool SelectMenu = false;
-    bool SelectCharacter = false;
-    bool PlayGame = false;
-    
-    int onePcharcter = 0;
-    int twoPcharcter = 0;
-    int ready = 0;
 
     while ( window.isOpen() )
     {
+        //game 분기
+        bool Title = true;
+        bool SelectMenu = false;
+        bool SelectCharacter = false;
+        bool PlayGame = false;
+
+        int gamemode = 1;
+        int onePcharcter = 0;
+        int twoPcharcter = 0;
+        bool onePlayready = false;
+        bool twoPlayready = false;
+        int ready = 0;
         Time dt = clock.restart();
         Event ev;
-
+        list<SpriteGameObject*> gameObjectList;
+        gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
         //Title Scene
         while ( Title )
         {
@@ -189,6 +177,15 @@ int main()
         //Character select
         while ( SelectCharacter )
         {
+            //charcter Menu
+            list<SpriteGameObject*> charcterList;
+            charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
+            charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(800, 400)));
+            charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));
+            for ( auto i : charcterList )
+            {
+                i->setScale(2, 2);
+            }
             Time dt = clock.restart();
             Event ev;
             InputManager::ClearInput();
@@ -211,6 +208,8 @@ int main()
                     SelectMenu = true;
                     onePcharcter = 0;
                     twoPcharcter = 0;
+                    onePlayready = false;
+                    twoPlayready = false;
                 }
                 
             }
@@ -245,22 +244,28 @@ int main()
                 }
             }
             
-            if ( InputManager::GetKeyDown(Keyboard::Return) && gamemode != 0 )
+            if ( InputManager::GetKeyDown(Keyboard::Return) )
             {
                 ready += 1;
-                if ( gamemode == 1 && ready == 1 )
-                {
-                    SelectCharacter = false;
-                    PlayGame = true;
-                }
-                else if ( gamemode == 2 && ready == 2 )
-                {
-                    SelectCharacter = false;
-                    PlayGame = true;
-                }
+                onePlayready = true;
+                
                 
             }
-
+            if ( InputManager::GetKeyDown(Keyboard::Space) && gamemode == 2 ) 
+            {
+                ready += 1;
+                twoPlayready = true;
+            }
+            if ( gamemode == 1 && onePlayready )
+            {
+                SelectCharacter = false;
+                PlayGame = true;
+            }
+            else if ( gamemode == 2 && onePlayready && twoPlayready )
+            {
+                SelectCharacter = false;
+                PlayGame = true;
+            }
             float deltaTime = dt.asSeconds();
 
             //Update
@@ -334,17 +339,19 @@ int main()
         if( PlayGame && (gamemode == 1 || gamemode == 2))
         {
             Vector2f timerBarSize(400, 80);
+            float duration = 4.0f;
+            float timer = duration;
             um.SetRectangleUI("timer Bar", timerBarSize, Color::Red);
             um.GetRectangleUI("timer Bar")->setPosition(
                 um.GetwSize().x * 0.5f - timerBarSize.x * 0.5f,
                 um.GetwSize().y - 100);
-
+            string charcterIndex[3] = { "graphics/player_green.png","graphics/player_red.png","graphics/player_yellow.png" };
             if ( gamemode == 1 )
 			{
 				Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
 				tree->SetPosition({ 960, 900 });
 				gameObjectList.push_back(tree);
-				Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"), gamemode, 1, tree->GetPosition());
+				Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
 				gameObjectList.push_back(player1);
 			}
 			else
@@ -355,9 +362,9 @@ int main()
 				Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 2);
 				tree2->SetPosition({ 1440, 900 });
 				gameObjectList.push_back(tree2);
-				Player* player1 = new Player(RMI->GetTexture("graphics/player_green.png"), gamemode, 1, tree1->GetPosition());
+				Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree1->GetPosition());
 				gameObjectList.push_back(player1);
-				Player* player2 = new Player(RMI->GetTexture("graphics/player_red.png"), gamemode, 2, tree2->GetPosition());
+				Player* player2 = new Player(RMI->GetTexture(charcterIndex[twoPcharcter]), gamemode, 2, tree2->GetPosition());
 				gameObjectList.push_back(player2);
 			}
             for ( auto i : gameObjectList )
@@ -377,6 +384,7 @@ int main()
                 }
                 if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
                 {
+
                     ready = 0;
                     gamemode = 1;
                     Title = true;
@@ -384,8 +392,9 @@ int main()
                     SelectCharacter = false;
                     PlayGame = false;
                     window.clear();
+                    break;
                 }
-                float deltaTime = dt.asSeconds(); //isPause ? 0.f : dt.asSeconds();
+                float deltaTime = dt.asSeconds();
                 window.clear();
                 for ( auto i : gameObjectList )
                 {
@@ -415,13 +424,13 @@ int main()
                 window.display();
             }
         } 
-
+        for ( auto go : gameObjectList )
+        {
+            go->Release();
+            delete go;
+        }
+        gameObjectList.clear();
     }
-    for ( auto go : gameObjectList )
-    {
-        go->Release();
-        delete go;
-    }
-    gameObjectList.clear();
+    
     return 0;
 }
