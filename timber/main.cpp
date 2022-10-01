@@ -29,7 +29,11 @@ int main()
     Vector2u size = window.getSize();
 
     um.SetTextUI("Press Enter to start!", "press enter");
-    um.GetTextUI("press enter")->setPosition({ 500, 500 });
+    um.GetTextUI("press enter")->setPosition({ 500, 600 });
+    
+    um.SetTextUI("Timber!", "title", 150, Color::Yellow);
+    um.GetTextUI("title")->setPosition({ 700, 400 });
+    
     um.SetTextUI("Menu");
     um.GetTextUI("Menu")->setPosition({ size.x * 0.5f, size.y * 0.5f });
 
@@ -83,6 +87,7 @@ int main()
             {
                 go->Draw(window);
             }
+            window.draw(*(um.GetTextUI("title")));
             window.draw(*(um.GetTextUI("press enter")));
             window.display();
         }
