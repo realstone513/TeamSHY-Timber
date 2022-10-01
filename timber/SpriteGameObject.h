@@ -32,6 +32,7 @@ public:
 	void SetOrigin(Origins origin);
 	Vector2f GetSize() const;
 
+	void setScale(float x, float y);
 	Vector2f GetPosition();
 	void SetPosition(Vector2f pos);
 	void Translate(Vector2f delta);
