@@ -54,29 +54,30 @@ int main()
     um.SetTextUI("->", "arrow");
     um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.5f });
     //Character Select
-    um.SetTextUI("^", "1pArrow", 100, Color::Red);
+    um.SetTextUI("1P", "1pArrow", 100, Color::Red);
     um.GetTextUI("1pArrow")->setPosition({ size.x * 0.25f, size.y * 0.5f });
-    um.SetTextUI("^", "2pArrow", 100, Color::Green);
+    um.SetTextUI("2P", "2pArrow", 100, Color::Green);
     um.GetTextUI("2pArrow")->setPosition({ size.x * 0.5f, size.y * 0.5f });
 
     //instance
     Clock clock;
-    //game 분기
-    bool Title = true;
-    bool SelectMenu = false;
-    bool SelectCharacter = false;
-    bool PlayGame = false;
     
-    int gamemode = 1;
-    int onePcharcter = 0;
-    int twoPcharcter = 0;
-    bool onePlayready = false;
-    bool twoPlayready = false;
-    int ready = 0;
 
 
     while ( window.isOpen() )
     {
+        //game 분기
+        bool Title = true;
+        bool SelectMenu = false;
+        bool SelectCharacter = false;
+        bool PlayGame = false;
+
+        int gamemode = 1;
+        int onePcharcter = 0;
+        int twoPcharcter = 0;
+        bool onePlayready = false;
+        bool twoPlayready = false;
+        int ready = 0;
         Time dt = clock.restart();
         Event ev;
         list<SpriteGameObject*> gameObjectList;
