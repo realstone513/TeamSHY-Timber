@@ -1,7 +1,7 @@
 #include "UIManager.h"
 
-UIManager::UIManager(Font& _font)
-	: font(_font)
+UIManager::UIManager(Font& _font, Vector2u windowSize)
+	: font(_font), wSize(windowSize)
 {
 }
 
@@ -19,9 +19,9 @@ void UIManager::Release()
 		delete i.second;
 	textMap.clear();
 
-	for (auto i : shapeMap)
+	for (auto i : rectangleMap)
 		delete i.second;
-	shapeMap.clear();
+	rectangleMap.clear();
 }
 
 void UIManager::SetTextUI(
@@ -50,4 +50,36 @@ Text* UIManager::GetTextUI(string name) const
 	if (textMap.find(name) == textMap.end())
 		return nullptr;
 	return textMap.find(name)->second;
+}
+
+void UIManager::SetRectangleUI(
+	string name,
+	Vector2f size,
+	Color shapeColor)
+{
+	RectangleShape* shape;
+	
+	shape = new RectangleShape(size);
+	shape->setFillColor(shapeColor);
+	rectangleMap.insert({ name, shape });
+}
+
+void UIManager::SetRectangleUI(
+	string name,
+	float sizeX, float sizeY,
+	Color shapeColor)
+{
+	SetRectangleUI(name, Vector2f(sizeX, sizeY), shapeColor);
+}
+
+RectangleShape* UIManager::GetRectangleUI(string name) const
+{
+	if (rectangleMap.find(name) == rectangleMap.end())
+		return nullptr;
+	return rectangleMap.find(name)->second;
+}
+
+Vector2u UIManager::GetwSize() const
+{
+	return wSize;
 }

@@ -10,12 +10,13 @@ using namespace std;
 class UIManager
 {
 private:
-	map<string, Text*>		textMap;
-	map<string, Shape*>		shapeMap;
-	Font&					font;
+	map<string, Text*>				textMap;
+	map<string, RectangleShape*>	rectangleMap;
+	Font&							font;
+	Vector2u						wSize;
 
 public:
-	UIManager(Font& _font);
+	UIManager(Font& _font, Vector2u windowSize);
 	~UIManager();
 
 	void Init();
@@ -27,4 +28,18 @@ public:
 		int charSize = 75,
 		Color textColor = Color::White);
 	Text* GetTextUI(string name) const;
+
+	void SetRectangleUI(
+		string name,
+		Vector2f size,
+		Color shapeColor = Color::White);
+
+	void SetRectangleUI(
+		string name,
+		float sizeX, float sizeY,
+		Color shapeColor = Color::White);
+
+	RectangleShape* GetRectangleUI(string name) const;
+
+	Vector2u GetwSize() const;
 };
