@@ -42,7 +42,10 @@
     <ClCompile Include="Utils.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="branch.cpp">
+    <ClCompile Include="Branch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
@@ -55,7 +58,16 @@
     </ClInclude>
     <ClInclude Include="Player2.h">
       <Filter>헤더 파일</Filter>
+<<<<<<< HEAD
+=======
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="..\..\TeamSHY-timber\timber\InputManager.h">
+      <Filter>헤더 파일</Filter>
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
+    </ClInclude>
+>>>>>>> spriteGameObject
     <ClInclude Include="Tree.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -80,7 +92,10 @@
     <ClInclude Include="Utils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="branch.h">
+    <ClInclude Include="Branch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="UIManager.h">

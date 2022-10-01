@@ -1,4 +1,4 @@
-﻿#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
 
@@ -105,7 +105,6 @@ int main()
             {
                 go->Draw(window);
             }
-
             window.draw(*(um.GetTextUI("title")));
             window.draw(*(um.GetTextUI("press enter")));
 
@@ -139,7 +138,6 @@ int main()
             }
             if ( InputManager::GetKeyDown(Keyboard::Return) && gamemode != 0 )
             {
-
                 SelectMenu = false;
                 SelectCharacter = true;
             }
@@ -149,7 +147,6 @@ int main()
             //Update
             for ( auto go : gameObjectList )
             {
-
                 go->Update(deltaTime);
             }
 
@@ -171,6 +168,7 @@ int main()
             window.draw(*um.GetTextUI("Menu"));
             window.draw(*(um.GetTextUI("1p")));
             window.draw(*(um.GetTextUI("2p")));
+
             window.display();
         }
 
@@ -371,10 +369,9 @@ int main()
 			{
 				i->Init();
 			}
-            while ( PlayGame )
+            while (PlayGame)
             {
                 Time dt = clock.restart(); //이전 업데이트 시간과 현재 업데이트 시간 차이 기록
-
                 Event ev;
                 InputManager::ClearInput();
 

@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="branch.cpp" />
+    <ClCompile Include="Branch.cpp" />
     <ClCompile Include="EffectLog.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -160,7 +160,7 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="branch.h" />
+    <ClInclude Include="Branch.h" />
     <ClInclude Include="EffectLog.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Player.h" />

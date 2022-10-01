@@ -3,29 +3,42 @@
 #include "InputManager.h"
 
 Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
-	:SpriteGameObject(texTree), texTree(texTree), side(Sides::Right), GameMode(gamemode), is1P2P(is1P2P), isChop(false)
+	:SpriteGameObject(texTree), texTree(texTree), side(Sides::Right), GameMode(gamemode), is1P2P(is1P2P), isChop(false), currentBranche(-1)
 {
 	for (int i = 0; i < 100; ++i)
 	{
-		if (this->is1P2P == 1)
+		if (this->GameMode == 1)
 		{
 			auto log = new EffectLog(RMI->GetTexture("graphics/log.png"), 5.f);
 			unuseLogs.push_back(log);
 		}
 		else
 		{
-			if (this->GameMode == 1)
-			{
-				auto log = new EffectLog(RMI->GetTexture("graphics/2log.png"), 5.f);
-				unuseLogs.push_back(log);
-			}
-			else
-			{
-				auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
-				unuseLogs.push_back(log);
-			}
-
+			auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
+			unuseLogs.push_back(log);
 		}
+	}
+
+	// Init Branch
+	vector<Branch*> branches(6);
+	for (int i = 0; i < branches.size(); i++)
+	{
+		branches[i] = new Branch(RMI->GetTexture("graphics/branch.png"));
+		if (i == 0)
+			branches[i]->SetSide(Sides::None);
+		else
+			branches[i]->SetSide((Sides)Utils::Range(0, 2));
+	}
+
+	vector<Vector2f> branchPosArr(branches.size());
+	float x = branches[0]->GetPosition().x;
+	float y = 800;
+	float offset = branches[0]->GetSize().y;
+	offset += 100;
+	for (int i = 0; i < branches.size(); ++i)
+	{
+		branchPosArr[i] = Vector2f(x, y);
+		y -= offset;
 	}
 }
 
@@ -160,6 +173,12 @@ void Tree::Draw(RenderWindow& window)
 	for (auto log : useLogs)
 	{
 		log->Draw(window);
+		
+	}
+	for (auto branch : branches)
+	{
+		branch->Draw(window);
+
 	}
 }
 
@@ -197,4 +216,19 @@ void Tree::ShowLogEffect(Sides side)
 	log->SetPosition(pos);
 	log->SetOrigin(Origins::MC);
 	log->Fire(force, aForce);
+}
+
+void Tree::UpdateBranches()
+{
+	currentBranche = (currentBranche + 1) % branches.size();
+
+	for (int i = 0; i < branches.size(); ++i)
+	{
+		int index = (currentBranche + i) % branches.size();
+		branches[index]->SetPosition(branchPosArr[i]);
+		if (i == branches.size() - 1)
+		{
+			branches[index]->SetSide((Sides)Utils::Range(0, 2));
+		}
+	}
 }
