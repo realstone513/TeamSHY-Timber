@@ -1,11 +1,14 @@
-﻿#include <iostream>
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
+#include <iostream>
 #include <list>
-#include "ResourceManager.h"
+
 #include "SpriteGameObject.h"
 #include "Player.h"
-#include "InputManager.h"
 #include "Tree.h"
+
+#include "ResourceManager.h"
+#include "InputManager.h"
+#include "UIManager.h"
 
 #define X 1920
 #define Y 1080
@@ -18,15 +21,19 @@ int main()
    
 	VideoMode vm(1920, 1080);
 	RenderWindow window(vm, "timber", Style::Default);
+<<<<<<< HEAD
 	list<SpriteGameObject*> gameObjectList;
     auto resourceMgr = ResourceManager::GetInstance();
     gameObjectList.push_back(new SpriteGameObject(*resourceMgr->GetTexture("graphics/background.png")));
     //
+=======
+    list<SpriteGameObject*> gameObjectList;
+    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+>>>>>>> 17c2a126f8e80abbdbd4babb06a339e066adf603
 
-    //Font
-    Font font;
-    font.loadFromFile("fonts/KOMIKAP_.ttf");
+    UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"));
 
+<<<<<<< HEAD
     Text messageText;
     Text titleText;
     messageText.setFont(font);
@@ -51,6 +58,18 @@ int main()
     menuText.setPosition(size.x * 0.5f, size.y * 0.5f);
     Utils::SetOrigin(menuText, Origins::MC);
     //
+=======
+    Vector2u size = window.getSize();
+
+    um.SetTextUI("Press Enter to start!", "press enter");
+    um.GetTextUI("press enter")->setPosition({ 500, 600 });
+    
+    um.SetTextUI("Timber!", "title", 150, Color::Yellow);
+    um.GetTextUI("title")->setPosition({ 700, 400 });
+    
+    um.SetTextUI("Menu");
+    um.GetTextUI("Menu")->setPosition({ size.x * 0.5f, size.y * 0.5f });
+>>>>>>> 17c2a126f8e80abbdbd4babb06a339e066adf603
 
     Clock clock;
     bool SelectMenu = false;
@@ -58,7 +77,6 @@ int main()
     bool Title = true;
     bool run = true;
     int gamemode = 0;
-
     while ( window.isOpen() )
     {
         //sceneManager.Init();
@@ -94,7 +112,6 @@ int main()
             //Update
             for ( auto go : gameObjectList )
             {
-
                 go->Update(deltaTime);
             }
 
@@ -104,8 +121,13 @@ int main()
             {
                 go->Draw(window);
             }
+<<<<<<< HEAD
             window.draw(titleText);
             window.draw(messageText);
+=======
+            window.draw(*(um.GetTextUI("title")));
+            window.draw(*(um.GetTextUI("press enter")));
+>>>>>>> 17c2a126f8e80abbdbd4babb06a339e066adf603
             window.display();
         }
 
@@ -113,7 +135,6 @@ int main()
         //Menu Scene
         while ( SelectMenu )
         {
-            cout << "menu" << endl;
             Time dt = clock.restart();
             Event ev;
             InputManager::ClearInput();
@@ -161,17 +182,17 @@ int main()
             }
             if ( gamemode == 1 )
             {
-                menuText.setString("1P");
+                um.GetTextUI("Menu")->setString("1P");
             }
             else if( gamemode == 2 )
             {
-                menuText.setString("2P");
+                um.GetTextUI("Menu")->setString("2P");
             }
             else
             {
-                menuText.setString("Menu");
+                um.GetTextUI("Menu")->setString("Menu");
             }
-            window.draw(menuText);
+            window.draw(*um.GetTextUI("Menu"));
             window.display();
         }
 
