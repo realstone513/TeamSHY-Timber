@@ -10,6 +10,7 @@ using namespace std;
 class UIManager
 {
 private:
+<<<<<<< HEAD
 	map<string, Text*>		textMap;
 	map<string, Shape*>		shapeMap;
 	Font&					font;
@@ -27,4 +28,13 @@ public:
 		int charSize = 75,
 		Color textColor = Color::White);
 	Text* GetTextUI(string name) const;
+=======
+	map<string, Text*> textMap;
+	map<string, Shape*> shapeMap;
+
+public:
+	UIManager();
+	~UIManager();
+
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
 };

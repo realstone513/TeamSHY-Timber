@@ -3,19 +3,41 @@
 #include "InputManager.h"
 
 Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
+<<<<<<< HEAD
 	:SpriteGameObject(texTree), texTree(texTree), side(Sides::Right), GameMode(gamemode), is1P2P(is1P2P), isChop(false), currentBranche(-1)
 {
 	for (int i = 0; i < 100; ++i)
 	{
 		if (this->GameMode == 1)
+=======
+	:SpriteGameObject(texTree), texTree(texTree), side(Sides::Right), GameMode(gamemode), is1P2P(is1P2P), isChop(false)
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		if (this->is1P2P == 1)
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
 		{
 			auto log = new EffectLog(RMI->GetTexture("graphics/log.png"), 5.f);
 			unuseLogs.push_back(log);
 		}
 		else
 		{
+<<<<<<< HEAD
 			auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
 			unuseLogs.push_back(log);
+=======
+			if (this->GameMode == 1)
+			{
+				auto log = new EffectLog(RMI->GetTexture("graphics/2log.png"), 5.f);
+				unuseLogs.push_back(log);
+			}
+			else
+			{
+				auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
+				unuseLogs.push_back(log);
+			}
+
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
 		}
 	}
 
@@ -50,7 +72,10 @@ void Tree::Init()
 {
 	sprite.setTexture(texTree,true);
 	SetOrigin(Origins::BC);
+<<<<<<< HEAD
 
+=======
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
 }
 
 void Tree::Release()
@@ -176,11 +201,14 @@ void Tree::Draw(RenderWindow& window)
 		log->Draw(window);
 		
 	}
+<<<<<<< HEAD
 	for (auto branch : branches)
 	{
 		branch->Draw(window);
 
 	}
+=======
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
 }
 
 
@@ -217,6 +245,7 @@ void Tree::ShowLogEffect(Sides side)
 	log->SetPosition(pos);
 	log->SetOrigin(Origins::MC);
 	log->Fire(force, aForce);
+<<<<<<< HEAD
 }
 
 void Tree::UpdateBranches()
@@ -234,3 +263,6 @@ void Tree::UpdateBranches()
 	}
 }
 
+=======
+}
+>>>>>>> d148df034bed63e75925ac500a78b7377e25d359
