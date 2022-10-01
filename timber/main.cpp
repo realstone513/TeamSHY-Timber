@@ -10,21 +10,19 @@
 #include "InputManager.h"
 #include "UIManager.h"
 
-#define X 1920
-#define Y 1080
-
 using namespace std;
 using namespace sf;
 
 int main()
 {
-   
 	VideoMode vm(1920, 1080);
 	RenderWindow window(vm, "timber", Style::Default);
     list<SpriteGameObject*> gameObjectList;
     gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"), window.getSize());
+
     Vector2u size = window.getSize();
-    
+
     //charcter Menu
     list<SpriteGameObject*> charcterList;
     charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
@@ -35,8 +33,6 @@ int main()
         i->setScale(2, 2);
     }
    
-    //UI
-    UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"));
     //Title
     um.SetTextUI("Press Enter to start!", "press enter");
     um.GetTextUI("press enter")->setPosition({ 500, 600 });
@@ -44,6 +40,8 @@ int main()
     um.GetTextUI("title")->setPosition({ 700, 400 });
     //Menu
     um.SetTextUI("Menu");
+    um.GetTextUI("Menu")->setPosition({
+        um.GetwSize().x * 0.5f, um.GetwSize().y * 0.5f});
     um.GetTextUI("Menu")->setPosition({ size.x * 0.35f, size.y * 0.15f });
     um.GetTextUI("Menu")->setCharacterSize(225);
     um.SetTextUI("1 player", "1p");
@@ -62,11 +60,16 @@ int main()
     Clock clock;
     //game 분기
     bool Title = true;
+    bool run = true;
+    int gamemode = 0;
+
+    float duration = 4.0f;
+    float timer = duration;
+
     bool SelectMenu = false;
     bool SelectCharacter = false;
     bool PlayGame = false;
     
-    int gamemode = 1;
     int onePcharcter = 0;
     int twoPcharcter = 0;
     int ready = 0;
@@ -117,6 +120,7 @@ int main()
 
             window.draw(*(um.GetTextUI("title")));
             window.draw(*(um.GetTextUI("press enter")));
+
             window.display();
         }
 
@@ -329,6 +333,12 @@ int main()
         //Game Scene
         if( PlayGame && (gamemode == 1 || gamemode == 2))
         {
+            Vector2f timerBarSize(400, 80);
+            um.SetRectangleUI("timer Bar", timerBarSize, Color::Red);
+            um.GetRectangleUI("timer Bar")->setPosition(
+                um.GetwSize().x * 0.5f - timerBarSize.x * 0.5f,
+                um.GetwSize().y - 100);
+
             if ( gamemode == 1 )
 			{
 				Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
@@ -385,6 +395,23 @@ int main()
                 {
                     i->Draw(window);
                 }
+
+                // UI update
+                timer -= deltaTime;
+                if (timer < 0.f)
+                {
+                    timer = 0.f;
+                }
+
+                float normTime = timer / duration; // 정규화
+                float timerSizeX = timerBarSize.x * normTime;
+                um.GetRectangleUI("timer Bar")->
+                    setSize({timerSizeX, timerBarSize.y});
+                um.GetRectangleUI("timer Bar")->setPosition(
+                    um.GetwSize().x * 0.5f - timerSizeX * 0.5f,
+                    um.GetwSize().y - 100);
+                
+                window.draw(*um.GetRectangleUI("timer Bar"));
                 window.display();
             }
         } 
