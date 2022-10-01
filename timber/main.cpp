@@ -27,10 +27,13 @@ int main()
     
     //charcter Menu
     list<SpriteGameObject*> charcterList;
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(300, 500)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(900, 500)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1500, 500)));
-    
+    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
+    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(800, 400)));
+    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));
+    for ( auto i : charcterList )
+    {
+        i->setScale(2, 2);
+    }
    
     //UI
     UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"));
@@ -49,17 +52,24 @@ int main()
     um.GetTextUI("2p")->setPosition({ size.x * 0.5f, size.y * 0.75f });
     um.SetTextUI("->", "arrow");
     um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.5f });
+    //Character Select
+    um.SetTextUI("^", "1pArrow", 100, Color::Red);
+    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.25f, size.y * 0.5f });
+    um.SetTextUI("^", "2pArrow", 100, Color::Green);
+    um.GetTextUI("2pArrow")->setPosition({ size.x * 0.5f, size.y * 0.5f });
 
     //instance
     Clock clock;
+    //game 분기
+    bool Title = true;
     bool SelectMenu = false;
     bool SelectCharacter = false;
     bool PlayGame = false;
-    bool Title = true;
-    bool run = true;
+    
     int gamemode = 1;
     int onePcharcter = 0;
     int twoPcharcter = 0;
+    int ready = 0;
 
     while ( window.isOpen() )
     {
@@ -185,45 +195,66 @@ int main()
 
             if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
             {
-                //gamemode = 0;
-                SelectCharacter = false;
-                SelectMenu = true;
+                if ( ready > 0 )
+                {
+                    ready -= 1;
+                    PlayGame = false;
+                    continue;
+                }
+                else
+                {
+                    SelectCharacter = false;
+                    SelectMenu = true;
+                    onePcharcter = 0;
+                    twoPcharcter = 0;
+                }
+                
             }
             if ( gamemode == 1 )
             {
-                if ( InputManager::GetKeyDown(Keyboard::Key::A) && (onePcharcter < 0 || onePcharcter > 2) )
+                if ( InputManager::GetKeyDown(Keyboard::Key::A) && onePcharcter > 0 )
                 {
                     onePcharcter -= 1;
                 }
-                if ( InputManager::GetKeyDown(Keyboard::Key::D) && (onePcharcter < 0 || onePcharcter > 2) )
+                if ( InputManager::GetKeyDown(Keyboard::Key::D) && onePcharcter < 2 )
                 {
                     onePcharcter += 1;
                 }
             }
-            else
+            else if(gamemode == 2)
             {
-                if ( InputManager::GetKeyDown(Keyboard::Key::A) && (onePcharcter < 0 || onePcharcter > 2) )
+                if ( InputManager::GetKeyDown(Keyboard::Key::A) && onePcharcter > 0 )
                 {
                     onePcharcter -= 1;
                 }
-                if ( InputManager::GetKeyDown(Keyboard::Key::D) && (onePcharcter < 0 || onePcharcter > 2) )
+                if ( InputManager::GetKeyDown(Keyboard::Key::D) && onePcharcter < 2 )
                 {
                     onePcharcter += 1;
                 }
-                if ( InputManager::GetKeyDown(Keyboard::Key::Left) && (onePcharcter < 0 || onePcharcter > 2) )
+                if ( InputManager::GetKeyDown(Keyboard::Key::Left) && twoPcharcter > 0 )
                 {
-                    twoPcharcter -= 1;
+					twoPcharcter -= 1;
                 }
-                if ( InputManager::GetKeyDown(Keyboard::Key::Right) && (onePcharcter < 0 || onePcharcter > 2) )
+                if ( InputManager::GetKeyDown(Keyboard::Key::Right) && twoPcharcter < 2 )
                 {
-                    twoPcharcter += 1;
+					twoPcharcter += 1;   
                 }
             }
             
             if ( InputManager::GetKeyDown(Keyboard::Return) && gamemode != 0 )
             {
-                SelectMenu = false;
-                PlayGame = true;
+                ready += 1;
+                if ( gamemode == 1 && ready == 1 )
+                {
+                    SelectCharacter = false;
+                    PlayGame = true;
+                }
+                else if ( gamemode == 2 && ready == 2 )
+                {
+                    SelectCharacter = false;
+                    PlayGame = true;
+                }
+                
             }
 
             float deltaTime = dt.asSeconds();
@@ -245,19 +276,53 @@ int main()
 			{
 				go->Draw(window);
 			}
-            /*if ( gamemode == 1 )
+
+            if ( gamemode == 1 )
             {
-                um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.5f });
+                if ( onePcharcter == 0 )
+                {
+                    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.25f, size.y * 0.75f });
+                }
+                else if ( onePcharcter == 1 )
+                {
+                    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.5f, size.y * 0.75f });
+                }
+                else if ( onePcharcter == 2 )
+                {
+                    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.75f, size.y * 0.75f });
+                }
+                window.draw(*(um.GetTextUI("1pArrow")));
             }
             else if ( gamemode == 2 )
             {
-                um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.75f });
-            }*/
-            /*else
-            {
-                um.GetTextUI("Menu")->setString("Menu");
-            }*/
-            
+                if ( onePcharcter == 0 )
+                {
+                    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.25f, size.y * 0.75f });
+                }
+                else if ( onePcharcter == 1 )
+                {
+                    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.5f, size.y * 0.75f });
+                }
+                else if ( onePcharcter == 2 )
+                {
+                    um.GetTextUI("1pArrow")->setPosition({ size.x * 0.75f, size.y * 0.75f });
+                }
+
+                if ( twoPcharcter == 0 )
+                {
+                    um.GetTextUI("2pArrow")->setPosition({ size.x * 0.25f, size.y * 0.75f });
+                }
+                else if ( twoPcharcter == 1 )
+                {
+                    um.GetTextUI("2pArrow")->setPosition({ size.x * 0.5f, size.y * 0.75f });
+                }
+                else if ( twoPcharcter == 2 )
+                {
+                    um.GetTextUI("2pArrow")->setPosition({ size.x * 0.75f, size.y * 0.75f });
+                }
+                window.draw(*(um.GetTextUI("1pArrow")));
+                window.draw(*(um.GetTextUI("2pArrow")));
+            }
             window.display();
         }
        
@@ -302,11 +367,16 @@ int main()
                 }
                 if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
                 {
-                    gamemode = 0;
-                    PlayGame = false;
+                    ready = 0;
+                    gamemode = 1;
                     Title = true;
+                    SelectMenu = false;
+                    SelectCharacter = false;
+                    PlayGame = false;
+                    window.clear();
                 }
                 float deltaTime = dt.asSeconds(); //isPause ? 0.f : dt.asSeconds();
+                window.clear();
                 for ( auto i : gameObjectList )
                 {
                     i->Update(deltaTime);

@@ -43,6 +43,11 @@ void SpriteGameObject::SetOrigin(Origins origin)
 	Utils::SetOrigin(sprite, origin);
 }
 
+void SpriteGameObject::setScale(float x, float y)
+{
+	sprite.setScale(Vector2f(x, y));
+}
+
 Vector2f SpriteGameObject::GetPosition()
 {
 	return sprite.getPosition();
