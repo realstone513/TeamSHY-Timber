@@ -2,7 +2,7 @@
 #include "ResourceManager.h"
 
 Branch::Branch(Texture& tex)
-	: SpriteGameObject(tex), side(Sides::None)
+	: SpriteGameObject(tex)
 {
 
 }
@@ -20,13 +20,19 @@ void Branch::SetSide(Sides side)
         this->side = Sides::Left;
         break;
     case Sides::Right:
-        sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_R.png"));
+      //  sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_R.png"));
         this->side = Sides::Right;
         break;
     case Sides::None:
-        sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+      //  sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_N.png"));
         this->side = Sides::None;
         break;
     }
 }
+
+Sides Branch::GetSide()
+{
+    return side;
+}
+
 

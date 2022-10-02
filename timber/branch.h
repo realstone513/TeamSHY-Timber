@@ -8,9 +8,8 @@ private:
 
 public:
     Branch(Texture& tex);
-
-
     virtual void Init() override;
     void SetSide(Sides side);
+    Sides GetSide();
 };
 

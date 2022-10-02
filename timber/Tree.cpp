@@ -19,11 +19,33 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 		}
 	}
 
-	// Init Branch
 	vector<Branch*> branches(6);
 	for (int i = 0; i < branches.size(); i++)
 	{
-		branches[i] = new Branch(RMI->GetTexture("graphics/branch.png"));
+		//branches[i] = new Branch(RMI->GetTexture("graphics/branch.png"));
+		//(Sides)Utils::Range(0, 2) 숫자를 먼저 뽑아서 방향 정하고
+		// 방향 맞는 텍스쳐를 늅 브랜치 하고
+		//
+	/*	if (i == 0)
+		{
+			branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+		}
+		else
+		{
+			switch ((Sides)Utils::Range(0, 2))
+			{
+			case Sides::Left:
+				branches[i]= RMI->GetTexture("graphics/1P_log(b)_L.png"));
+				break;
+			case Sides::Right:
+				branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_R.png"));
+				break;
+			case Sides::None:
+				branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+				break;
+			}
+		}
+		*/
 		if (i == 0)
 			branches[i]->SetSide(Sides::None);
 		else
