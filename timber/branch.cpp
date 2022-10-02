@@ -16,7 +16,7 @@ void Branch::SetSide(Sides side)
     switch (side)
     {
     case Sides::Left:
-        sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_L.png"));
+        //sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_L.png"));
         this->side = Sides::Left;
         break;
     case Sides::Right:
