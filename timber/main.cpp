@@ -45,6 +45,9 @@ int main()
     um.GetTextUI("1pArrow")->setPosition({ size.x * 0.25f, size.y * 0.5f });
     um.SetTextUI("2P", "2pArrow", 100, Color::Green);
     um.GetTextUI("2pArrow")->setPosition({ size.x * 0.5f, size.y * 0.5f });
+    //EndGame
+    um.SetTextUI("Game Over", "end", 150, Color::Yellow);
+    um.GetTextUI("end")->setPosition({ 700, 400 });
 
     //instance
     Clock clock;
@@ -56,6 +59,7 @@ int main()
         bool SelectMenu = false;
         bool SelectCharacter = false;
         bool PlayGame = false;
+        bool GameOver = false;
 
         int gamemode = 1;
         int onePcharcter = 0;
@@ -67,6 +71,7 @@ int main()
         Event ev;
         list<SpriteGameObject*> gameObjectList;
         gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+
         //Title Scene
         while ( Title )
         {
@@ -371,7 +376,7 @@ int main()
 			}
             while (PlayGame)
             {
-                Time dt = clock.restart(); //이전 업데이트 시간과 현재 업데이트 시간 차이 기록
+                Time dt = clock.restart(); //?�전 ?�데?�트 ?�간�??�재 ?�데?�트 ?�간 차이 기록
                 Event ev;
                 InputManager::ClearInput();
 
@@ -381,7 +386,6 @@ int main()
                 }
                 if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
                 {
-
                     ready = 0;
                     gamemode = 1;
                     Title = true;
@@ -391,12 +395,15 @@ int main()
                     window.clear();
                     break;
                 }
+
                 float deltaTime = dt.asSeconds();
-                window.clear();
+                
                 for ( auto i : gameObjectList )
                 {
                     i->Update(deltaTime);
                 }
+
+                window.clear();
                 for ( auto i : gameObjectList )
                 {
                     i->Draw(window);
@@ -408,25 +415,84 @@ int main()
                 {
                     timer = 0.f;
                 }
+                if ( timer == 0.f )
+                {
+                    ready = 0;
+                    gamemode = 1;
+                    SelectMenu = false;
+                    SelectCharacter = false;
+                    PlayGame = false;
+                    Title = false;
+                    GameOver = true;
+                    gamemode = 0;
+                    window.clear();
+                    break;
+                }
 
-                float normTime = timer / duration; // 정규화
+                float normTime = timer / duration; // ?�규??
                 float timerSizeX = timerBarSize.x * normTime;
-                um.GetRectangleUI("timer Bar")->
-                    setSize({timerSizeX, timerBarSize.y});
+                um.GetRectangleUI("timer Bar")->setSize({timerSizeX, timerBarSize.y});
                 um.GetRectangleUI("timer Bar")->setPosition(
                     um.GetwSize().x * 0.5f - timerSizeX * 0.5f,
                     um.GetwSize().y - 100);
+
                 
                 window.draw(*um.GetRectangleUI("timer Bar"));
                 window.display();
             }
-        } 
+           
+        }
+       
+        //Game over
+        while ( GameOver )
+        {
+            Time dt = clock.restart();
+            Event ev;
+            InputManager::ClearInput();
+
+            while ( window.pollEvent(ev) )
+            {
+                InputManager::UpdateInput(ev);
+            }
+
+            if ( InputManager::GetKeyDown(Keyboard::Key::Return) )
+            {
+                Title = true;
+                break;
+            }
+            if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
+            {
+                window.close();
+                break;
+            }
+
+            float deltaTime = dt.asSeconds();
+
+            //Update
+            for ( auto go : gameObjectList )
+            {
+                go->Update(deltaTime);
+            }
+
+            //Draw
+            window.clear();
+            for ( auto go : gameObjectList )
+            {
+                go->Draw(window);
+            }
+            window.draw(*(um.GetTextUI("end")));
+
+            window.display();
+        }
+        
         for ( auto go : gameObjectList )
         {
             go->Release();
             delete go;
         }
         gameObjectList.clear();
+
+       
     }
     
     return 0;
