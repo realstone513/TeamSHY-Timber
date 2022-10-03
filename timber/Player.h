@@ -17,11 +17,13 @@ private:
 	bool isAlive;
 	bool isChop;
 
+	int score;
+
 	Vector2f treePos;
 	vector<Vector2f> originalPos;
 
 public:
-	Player(Texture& player,int gamemode,int is1P2P,Vector2f treepos);
+	Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos);
 	~Player();
 
 	virtual void Init();
@@ -36,4 +38,5 @@ public:
 	bool GetisChop();
 	Sides GetPlayerSide();
 
+	int GetScore();
 };
