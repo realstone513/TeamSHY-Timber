@@ -277,7 +277,6 @@ int main()
             //Update
             for (auto go : gameObjectList)
             {
-
                 go->Update(deltaTime);
             }
 
@@ -347,6 +346,7 @@ int main()
             Vector2f timerBarSize(400, 80);
             float duration = 4.0f;
             float timer = duration;
+            bool isGameover =false;
             um.SetRectangleUI("timer Bar", timerBarSize, Color::Red);
             um.GetRectangleUI("timer Bar")->setPosition(
                 um.GetwSize().x * 0.5f - timerBarSize.x * 0.5f,
@@ -365,8 +365,10 @@ int main()
                 {
                     i->Init();
                 }
+
                 while (PlayGame)
                 {
+
                     Time dt = clock.restart(); //?댁쟾 ?낅뜲?댄듃 ?쒓컙怨??꾩옱 ?낅뜲?댄듃 ?쒓컙 李⑥씠 湲곕줉
                     Event ev;
                     InputManager::ClearInput();
@@ -387,23 +389,31 @@ int main()
                         window.clear();
                         break;
                     }
-                    if (player1->GetPlayerSide() == tree->GetCurrentBranchSide())
-                    {
-                        player1->Die();
-                        //PlayGame = false;
-                        window.clear();
-                    }
                     float deltaTime = dt.asSeconds();
                     window.clear();
                     for (auto i : gameObjectList)
                     {
-                        i->Update(deltaTime);
+                        if (isGameover)
+                        {
+                            i->Update(0);
+                        }
+                        else
+                        {
+                            i->Update(deltaTime);
+                        }
+                        
                     }
                     for (auto i : gameObjectList)
                     {
                         i->Draw(window);
                     }
-
+                    if (player1->GetPlayerSide() == tree->GetCurrentBranchSide())
+                    {
+                        player1->Die();
+                        //PlayGame = false;
+                        //window.clear();
+                        isGameover = true;
+                    }
                     // UI update
                     timer -= deltaTime;
                     if (timer < 0.f)
