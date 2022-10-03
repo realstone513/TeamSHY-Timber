@@ -2,6 +2,7 @@
 #include "SpriteGameObject.h"
 #include "ResourceManager.h"
 
+class Tree;
 using namespace std;
 
 class Player : public SpriteGameObject
@@ -11,12 +12,18 @@ private:
 	int GameMode;
 	int is1P2P;
 	Sides side;
+	Sides currentbranchside;
 
+	bool isAlive;
 	bool isChop;
+
+	int score;
+
 	Vector2f treePos;
 	vector<Vector2f> originalPos;
+
 public:
-	Player(Texture& player,int gamemode,int is1P2P,Vector2f treepos);
+	Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos);
 	~Player();
 
 	virtual void Init();
@@ -26,6 +33,10 @@ public:
 	virtual void SetFlipX(bool flip);
 
 	void Chop(Sides side);
+	void Die();
 
 	bool GetisChop();
+	Sides GetPlayerSide();
+
+	int GetScore();
 };
