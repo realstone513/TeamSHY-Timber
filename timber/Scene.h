@@ -1,10 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <string>
 #include <list>
 #include "InputManager.h"
-#include "SpriteGameObject.h"
 #include "UIManager.h"
+#include "Player.h"
+#include "Tree.h"
+
+//#include "SpriteGameObject.h"
 
 using namespace sf;
 using namespace std;
@@ -90,8 +92,22 @@ public:
 
 class GamePlay : public Scene
 {
+private:
+	int gameMode;
+	int	character1p;
+	int	character2p;
+	bool gameOver;
+	bool pause;
+	float duration;
+	float timer;
+
+	Player* player1;
+	Player* player2;
+	Tree* tree1;
+	Tree* tree2;
+
 public:
-	GamePlay();
+	GamePlay(int _mode, int player1, int player2);
 	virtual ~GamePlay() override;
 
 	virtual void Init() override;

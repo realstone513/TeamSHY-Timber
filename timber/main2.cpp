@@ -1,6 +1,4 @@
 #include "GameManager.h"
-#include "Player.h"
-#include "Tree.h"
 
 #include <iostream>
 
@@ -30,7 +28,10 @@ int main()
 		gm.character2p = sc->GetCharacter2p();
 		gm.ReleaseScene();
 
-
+		gm.PlayScene(new GamePlay(gm.gameMode, gm.character1p, gm.character2p));
+		if (gm.GetScene()->Loop())
+			continue;
+		gm.ReleaseScene();
 
 		//gm.GetWindow()->close();
 	}
@@ -48,6 +49,7 @@ int main()
 //            um.GetRectangleUI("timer Bar")->setPosition(
 //                um.GetwSize().x * 0.5f - timerBarSize.x * 0.5f,
 //                um.GetwSize().y - 100);
+// 
 //            string charcterIndex[3] = { "graphics/player_green.png","graphics/player_red.png","graphics/player_yellow.png" };
 //
 //            if (gamemode == 1)

@@ -38,17 +38,20 @@ void UIManager::Init()
 	SetTextUI("Ready", "1pReady", 100, Color::Red);
 	SetTextUI("Ready", "2pReady", 100, Color::Green);
 
+	//GamePlay
+    Vector2f timerBarSize(400, 80);
+	SetRectangleUI("timer Bar", timerBarSize, Color::Red);
+	GetRectangleUI("timer Bar")->setPosition(
+		wSize.x * 0.5f - timerBarSize.x * 0.5f,
+		wSize.y - 100);
+	SetTextUI("0", "1pScore", 100, Color::Magenta);
+	GetTextUI("1pScore")->setPosition({ 0, 0 });
+	SetTextUI("0", "2pScore", 100, Color::Cyan);
+	GetTextUI("2pScore")->setPosition({ wSize.x * 0.5f, 0 });
+
 	//EndGame
-	SetTextUI("Game Over", "end", 150, Color::Yellow);
-	GetTextUI("end")->setPosition({ 700, 400 });
-
-    //1pScore
-    SetTextUI("0", "1pScore", 100, Color::Magenta);
-    GetTextUI("1pScore")->setPosition({ 0, 0 });
-
-    //2pScore
-    SetTextUI("0", "2pScore", 100, Color::Magenta);
-    GetTextUI("2pScore")->setPosition({ 1520, 0 });
+	SetTextUI("Game Over!", "end", 150, Color::Yellow);
+	GetTextUI("end")->setPosition({ wSize.x * 0.3f,  wSize.x * 0.2f });
 }
 
 void UIManager::Release()

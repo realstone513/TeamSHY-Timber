@@ -1,5 +1,8 @@
+#include <vector>
+#include <string>
 #include "Scene.h"
 #include "ResourceManager.h"
+#include "FloatingObject.h"
 
 Scene::Scene()
     : playing(true), exit(false)
@@ -157,7 +160,6 @@ void SelectGameMode::Update()
     {
         playing = false;
         exit = true;
-        //window->close();
         return;
     }
 
@@ -257,7 +259,6 @@ void SelectCharacter::Update()
     {
         playing = false;
         exit = true;
-        //window->close();
         return;
     }
 
@@ -265,11 +266,13 @@ void SelectCharacter::Update()
     {
         if (InputManager::GetKeyDown(Keyboard::Key::A))
 		{
-			character1p -= 1;
+            if (character1p > 0)
+			    character1p -= 1;
 		}
 		if (InputManager::GetKeyDown(Keyboard::Key::D))
 		{
-            character1p += 1;
+            if (character1p < 2)
+                character1p += 1;
 		}
         if (InputManager::GetKeyDown(Keyboard::Return))
 		{
@@ -281,23 +284,35 @@ void SelectCharacter::Update()
     {
         if (InputManager::GetKeyDown(Keyboard::Key::A) && character1p > 0)
 		{
-            character1p -= 1;
-            ready1p = false;
+            if (character1p > 0)
+            {
+                character1p -= 1;
+                ready1p = false;
+            }
 		}
 		if (InputManager::GetKeyDown(Keyboard::Key::D) && character1p < 2)
 		{
-            character1p += 1;
-            ready1p = false;
+            if (character1p < 2)
+            {
+                character1p += 1;
+                ready1p = false;
+            }
 		}
 		if (InputManager::GetKeyDown(Keyboard::Key::Left) && character2p > 0)
 		{
-            character2p -= 1;
-            ready2p = false;
+            if (character2p > 0)
+            {
+                character2p -= 1;
+                ready2p = false;
+            }
 		}
 		if (InputManager::GetKeyDown(Keyboard::Key::Right) && character2p < 2)
 		{
-            character2p += 1;
-            ready2p = false;
+            if (character2p < 2)
+            {
+                character2p += 1;
+                ready2p = false;
+            }
 		}
         if (InputManager::GetKeyDown(Keyboard::Space))
         {
@@ -327,68 +342,64 @@ void SelectCharacter::Draw()
 
     if (gameMode == 1) // 1P
 	{
+        Vector2f position;
 		if (character1p == 0)
 		{
-			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f });
+            position = { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f };
 		}
 		else if (character1p == 1)
 		{
-			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
+            position = { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f };
 		}
 		else if (character1p == 2)
 		{
-			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f });
+            position = { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f };
 		}
+        um->GetTextUI("1pArrow")->setPosition(position);
 		window->draw(*um->GetTextUI("1pArrow"));
 	}
     else // 2P
     {
+        Vector2f position1p;
+        Vector2f ready1p;
 		if (character1p == 0)
 		{
-			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f });
-            um->GetTextUI("1pReady")->setPosition(
-                { um->GetwSize().x * 0.1f, um->GetwSize().y * 0.50f });
+            position1p = { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f };
+            ready1p = { um->GetwSize().x * 0.1f, um->GetwSize().y * 0.50f };
 		}
 		else if (character1p == 1)
 		{
-			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
-            um->GetTextUI("1pReady")->setPosition(
-                { um->GetwSize().x * 0.4f, um->GetwSize().y * 0.50f });
+            position1p = { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f };
+            ready1p = { um->GetwSize().x * 0.4f, um->GetwSize().y * 0.50f };
 		}
 		else if (character1p == 2)
 		{
-			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f });
-            um->GetTextUI("1pReady")->setPosition(
-                { um->GetwSize().x * 0.7f, um->GetwSize().y * 0.50f });
+            position1p = { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f };
+            ready1p = { um->GetwSize().x * 0.7f, um->GetwSize().y * 0.50f };
 		}
+        um->GetTextUI("1pArrow")->setPosition(position1p);
+        um->GetTextUI("1pReady")->setPosition(ready1p);
 
+        Vector2f position2p;
+        Vector2f ready2p;
 		if (character2p == 0)
 		{
-			um->GetTextUI("2pArrow")->setPosition(
-                { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f });
-            um->GetTextUI("2pReady")->setPosition(
-                { um->GetwSize().x * 0.1f, um->GetwSize().y * 0.50f });
+            position2p = { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f };
+            ready2p = { um->GetwSize().x * 0.1f, um->GetwSize().y * 0.50f };
 		}
 		else if (character2p == 1)
 		{
-			um->GetTextUI("2pArrow")->setPosition(
-                { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
-            um->GetTextUI("2pReady")->setPosition(
-                { um->GetwSize().x * 0.4f, um->GetwSize().y * 0.50f });
+            position2p = { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f };
+            ready2p = { um->GetwSize().x * 0.4f, um->GetwSize().y * 0.50f };
 		}
 		else if (character2p == 2)
 		{
-			um->GetTextUI("2pArrow")->setPosition(
-                { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f });
-            um->GetTextUI("2pReady")->setPosition(
-                { um->GetwSize().x * 0.7f, um->GetwSize().y * 0.50f });
+            position2p = { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f };
+            ready2p = { um->GetwSize().x * 0.7f, um->GetwSize().y * 0.50f };
 		}
+        um->GetTextUI("2pArrow")->setPosition(position2p);
+        um->GetTextUI("2pReady")->setPosition(ready2p);
+
 		window->draw(*um->GetTextUI("1pArrow"));
 		window->draw(*um->GetTextUI("2pArrow"));
     }
@@ -413,4 +424,153 @@ int SelectCharacter::GetCharacter1p()
 int SelectCharacter::GetCharacter2p()
 {
     return character2p;
+}
+
+// GamePlay
+GamePlay::GamePlay(int _mode, int player1, int player2)
+    : gameMode(_mode), character1p(player1), character2p(player2), gameOver(false), pause(false)
+{
+    duration = gameMode == 1 ? 5.f : 30.f;
+    timer = duration;
+    Init();
+}
+
+GamePlay::~GamePlay()
+{
+}
+
+void GamePlay::Init()
+{
+    Scene::Init();
+
+    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    
+    vector<float> startVector = { 2000, -300 };
+    vector<float> endVector = { -300, 2000 };
+    for (int i = 0; i < 3; ++i)
+    {
+        auto cloud = new FloatingObject(RMI->GetTexture("graphics/cloud.png"));
+        auto index = rand() % 2;
+
+        cloud->Set({ 100, 200 }, { 100, 200 },
+            { startVector[index], 0 }, { endVector[index], 0 });
+        gameObjectList.push_back(cloud);
+    }
+
+    string charcterIndex[3] = {
+        "graphics/player_red.png",
+        "graphics/player_green.png",
+        "graphics/player_yellow.png" };
+    if (gameMode == 1) // 1P
+    {
+        tree1 = new Tree(RMI->GetTexture("graphics/tree.png"), gameMode, 1);
+        tree1->SetPosition({ 960, 900 });
+        gameObjectList.push_back(tree1);
+        player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition());
+        gameObjectList.push_back(player1);
+    }
+    else // 2P
+    {
+        tree1 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gameMode, 1);
+		tree1->SetPosition({ 480, 900 });
+		gameObjectList.push_back(tree1);
+		tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gameMode, 2);
+		tree2->SetPosition({ 1440, 900 });
+		gameObjectList.push_back(tree2);
+		player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition());
+		gameObjectList.push_back(player1);
+		player2 = new Player(RMI->GetTexture(charcterIndex[character2p]), gameMode, 2, tree2->GetPosition());
+		gameObjectList.push_back(player2);
+    }
+
+    auto Bee = new FloatingObject(RMI->GetTexture("graphics/bee.png"));
+    auto Beeindex = rand() % 2;
+
+    Bee->Set({ 300,500 }, { 600, 800 },
+        { startVector[Beeindex], 0 }, { endVector[Beeindex], 0 });
+    gameObjectList.push_back(Bee);
+
+	for (auto i : gameObjectList)
+	{
+		i->Init();
+	}
+}
+
+void GamePlay::Update()
+{
+    Scene::Update();
+
+    float deltaTime = pause ? 0 : dt.asSeconds();
+    if (!gameOver)
+    {
+        for (auto i : gameObjectList)
+        {
+            i->Update(deltaTime);
+        }
+    }
+
+    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    {
+        playing = false;
+        exit = true;
+        return;
+    }
+
+    if (InputManager::GetKeyDown(Keyboard::Key::Return))
+    {
+        pause = true;
+    }
+
+    if (gameMode == 1 && (player1->GetPlayerSide() == tree1->GetCurrentBranchSide()) )
+	{
+		player1->Die();
+		gameOver = true;
+	}
+
+    timer -= deltaTime;
+    // Game Over
+    if (timer < 0.f)
+    {
+        timer = 0.f;
+    }
+
+    float normTime = timer / duration; // normalize
+    Vector2f timerBarSize = um->GetRectangleUI("timer Bar")->getSize();
+    float timerSizeX = timerBarSize.x * normTime;
+    um->GetRectangleUI("timer Bar")->
+        setSize({ timerSizeX, timerBarSize.y });
+    um->GetRectangleUI("timer Bar")->setPosition(
+        um->GetwSize().x * 0.5f - timerSizeX * 0.5f,
+        um->GetwSize().y - 100);
+    //string p1score = );
+    um->GetTextUI("1pScore")->setString("Score: " + to_string(player1->GetScore()));
+
+    if (gameMode == 2)
+    {
+        //string p2score = );
+        um->GetTextUI("2pScore")->setString("Score: " + to_string(player2->GetScore()));
+    }
+}
+
+void GamePlay::Draw()
+{
+    Scene::Draw();
+
+    for (auto go : gameObjectList)
+    {
+        go->Draw(*window);
+    }
+    if (gameOver)
+        window->draw(*(um->GetTextUI("end")));
+
+    window->draw(*(um->GetTextUI("1pScore")));
+    if (gameMode == 2)
+        window->draw(*(um->GetTextUI("2pScore")));
+    window->draw(*(um->GetRectangleUI("timer Bar")));
+    window->display();
+}
+
+void GamePlay::Release()
+{
+    Scene::Release();
 }
