@@ -346,7 +346,7 @@ int main()
             Vector2f timerBarSize(400, 80);
             float duration = 4.0f;
             float timer = duration;
-            bool isGameover =false;
+            bool isGameover =true;
             um.SetRectangleUI("timer Bar", timerBarSize, Color::Red);
             um.GetRectangleUI("timer Bar")->setPosition(
                 um.GetwSize().x * 0.5f - timerBarSize.x * 0.5f,
@@ -368,7 +368,6 @@ int main()
 
                 while (PlayGame)
                 {
-
                     Time dt = clock.restart(); //?댁쟾 ?낅뜲?댄듃 ?쒓컙怨??꾩옱 ?낅뜲?댄듃 ?쒓컙 李⑥씠 湲곕줉
                     Event ev;
                     InputManager::ClearInput();
@@ -391,18 +390,19 @@ int main()
                     }
                     float deltaTime = dt.asSeconds();
                     window.clear();
-                    for (auto i : gameObjectList)
+                    if (isGameover)
                     {
-                        if (isGameover)
+                        for (auto i : gameObjectList)
                         {
-                            i->Update(0);
+                           i->Update(deltaTime);
+                           
                         }
-                        else
-                        {
-                            i->Update(deltaTime);
-                        }
-                        
                     }
+                    else
+                    {
+                        deltaTime = 0;
+                    }
+                    
                     for (auto i : gameObjectList)
                     {
                         i->Draw(window);
@@ -412,7 +412,7 @@ int main()
                         player1->Die();
                         //PlayGame = false;
                         //window.clear();
-                        isGameover = true;
+                        isGameover = false;
                     }
                     // UI update
                     timer -= deltaTime;
@@ -478,16 +478,26 @@ int main()
                     if (player1->GetPlayerSide() == tree1->GetCurrentBranchSide())
                     {
                         player1->Die();
+                        isGameover = false;
                     }
                     if (player2->GetPlayerSide() == tree2->GetCurrentBranchSide())
                     {
                         player2->Die();
+                        isGameover = false;
                     }
                     float deltaTime = dt.asSeconds();
                     window.clear();
-                    for (auto i : gameObjectList)
+                    if (isGameover)
                     {
-                        i->Update(deltaTime);
+                        for (auto i : gameObjectList)
+                        {
+                            i->Update(deltaTime);
+
+                        }
+                    }
+                    else
+                    {
+                        deltaTime = 0;
                     }
                     for (auto i : gameObjectList)
                     {
