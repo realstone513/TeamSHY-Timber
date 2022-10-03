@@ -73,7 +73,8 @@ private:
 	int gameMode;
 	int	character1p;
 	int	character2p;
-	int ready;
+	bool ready1p;
+	bool ready2p;
 
 public:
 	SelectCharacter(int gameMode);

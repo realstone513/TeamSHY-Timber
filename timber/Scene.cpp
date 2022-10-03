@@ -33,14 +33,6 @@ void Scene::Update()
     {
         InputManager::UpdateInput(ev);
     }
-
-    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
-    {
-        playing = false;
-        window->close();
-        exit = true;
-        return;
-    }
 }
 
 void Scene::Draw()
@@ -101,6 +93,14 @@ void Title::Update()
 {
     Scene::Update();
 
+    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    {
+        playing = false;
+        window->close();
+        exit = true;
+        return;
+    }
+
     if (InputManager::GetKeyDown(Keyboard::Key::Return))
     {
         playing = false;
@@ -152,19 +152,29 @@ void SelectGameMode::Init()
 void SelectGameMode::Update()
 {
     Scene::Update();
-    
+
+    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    {
+        playing = false;
+        exit = true;
+        //window->close();
+        return;
+    }
+
     if (InputManager::GetKeyDown(Keyboard::Key::Return))
     {
         playing = false;
         return;
     }
 
-    if (InputManager::GetKeyDown(Keyboard::Key::Up))
+    if (InputManager::GetKeyDown(Keyboard::Key::Up) || 
+        InputManager::GetKeyDown(Keyboard::Key::W))
     {
         gameMode = 1;
     }
 
-    if (InputManager::GetKeyDown(Keyboard::Key::Down))
+    if (InputManager::GetKeyDown(Keyboard::Key::Down) ||
+        InputManager::GetKeyDown(Keyboard::Key::S))
     {
         gameMode = 2;
     }
@@ -177,12 +187,12 @@ void SelectGameMode::Update()
     if (gameMode == 1)
     {
         um->GetTextUI("arrow")->setPosition(
-            { um->GetwSize().x * 0.45f, um->GetwSize().y * 0.5f });
+            { um->GetwSize().x * 0.3f, um->GetwSize().y * 0.5f });
     }
     else if (gameMode == 2)
     {
         um->GetTextUI("arrow")->setPosition(
-            { um->GetwSize().x * 0.45f, um->GetwSize().y * 0.75f });
+            { um->GetwSize().x * 0.3f, um->GetwSize().y * 0.65f });
     }
 }
 
@@ -195,7 +205,7 @@ void SelectGameMode::Draw()
         go->Draw(*window);
     }
     window->draw(*um->GetTextUI("arrow"));
-    window->draw(*um->GetTextUI("Menu"));
+    window->draw(*um->GetTextUI("Game Mode"));
     window->draw(*um->GetTextUI("1p"));
     window->draw(*um->GetTextUI("2p"));
     window->display();
@@ -213,7 +223,7 @@ int SelectGameMode::GetGameMode()
 
 // SelectCharacter
 SelectCharacter::SelectCharacter(int gameMode)
-    : gameMode(gameMode), character1p(0), character2p(0), ready(0)
+    : gameMode(gameMode), character1p(0), character2p(0), ready1p(false), ready2p(false)
 {
     Init();
 }
@@ -243,7 +253,15 @@ void SelectCharacter::Update()
 {
     Scene::Update();
 
-    if (gameMode == 1)
+    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    {
+        playing = false;
+        exit = true;
+        //window->close();
+        return;
+    }
+
+    if (gameMode == 1) // 1P
     {
         if (InputManager::GetKeyDown(Keyboard::Key::A))
 		{
@@ -255,16 +273,46 @@ void SelectCharacter::Update()
 		}
         if (InputManager::GetKeyDown(Keyboard::Return))
 		{
-            ready++;
             playing = false;
             return;
 		}
     }
-
-    if (ready)
+    else // 2P
     {
-        playing = false;
-        return;
+        if (InputManager::GetKeyDown(Keyboard::Key::A) && character1p > 0)
+		{
+            character1p -= 1;
+            ready1p = false;
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::D) && character1p < 2)
+		{
+            character1p += 1;
+            ready1p = false;
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && character2p > 0)
+		{
+            character2p -= 1;
+            ready2p = false;
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && character2p < 2)
+		{
+            character2p += 1;
+            ready2p = false;
+		}
+        if (InputManager::GetKeyDown(Keyboard::Space))
+        {
+            ready1p = true;
+        }
+        if (InputManager::GetKeyDown(Keyboard::Return))
+        {
+            ready2p = true;
+        }
+
+        if (ready1p && ready2p)
+        {
+            playing = false;
+            return;
+        }
     }
 }
 
@@ -277,7 +325,7 @@ void SelectCharacter::Draw()
         go->Draw(*window);
     }
 
-    if (gameMode == 1)
+    if (gameMode == 1) // 1P
 	{
 		if (character1p == 0)
 		{
@@ -292,11 +340,47 @@ void SelectCharacter::Draw()
 		else if (character1p == 2)
 		{
 			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.75f,um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.75f, um->GetwSize().y * 0.75f });
 		}
 		window->draw(*um->GetTextUI("1pArrow"));
 	}
+    else // 2P
+    {
+		if (character1p == 0)
+		{
+			um->GetTextUI("1pArrow")->setPosition(
+                { um->GetwSize().x * 0.25f, um->GetwSize().y * 0.75f });
+		}
+		else if (character1p == 1)
+		{
+			um->GetTextUI("1pArrow")->setPosition(
+                { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
+		}
+		else if (character1p == 2)
+		{
+			um->GetTextUI("1pArrow")->setPosition(
+                { um->GetwSize().x * 0.75f, um->GetwSize().y * 0.75f });
+		}
 
+		if (character2p == 0)
+		{
+			um->GetTextUI("2pArrow")->setPosition(
+                { um->GetwSize().x * 0.25f, um->GetwSize().y * 0.75f });
+		}
+		else if (character2p == 1)
+		{
+			um->GetTextUI("2pArrow")->setPosition(
+                { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
+		}
+		else if (character2p == 2)
+		{
+			um->GetTextUI("2pArrow")->setPosition(
+                { um->GetwSize().x * 0.75f, um->GetwSize().y * 0.75f });
+		}
+		window->draw(*um->GetTextUI("1pArrow"));
+		window->draw(*um->GetTextUI("2pArrow"));
+    }
+    window->draw(*um->GetTextUI("Select"));
     window->display();
 }
 

@@ -12,30 +12,43 @@ UIManager::~UIManager()
 void UIManager::Init()
 {
 	//Title
+	SetTextUI("T i m b e r !", "title", 250, Color::Yellow);
+	GetTextUI("title")->setPosition({
+		wSize.x * 0.1f, wSize.y * 0.2f });
 	SetTextUI("Press Enter to start!", "press enter");
-	GetTextUI("press enter")->setPosition({ 500, 600 });
-	SetTextUI("Timber!", "title", 150, Color::Yellow);
-	GetTextUI("title")->setPosition({ 700, 400 });
+	GetTextUI("press enter")->setPosition({
+		wSize.x * 0.25f, wSize.y * 0.6f });
+
 	//Menu
-	SetTextUI("Menu");
-	GetTextUI("Menu")->setPosition({
-		wSize.x * 0.5f, wSize.y * 0.5f });
-	GetTextUI("Menu")->setPosition({ wSize.x * 0.35f, wSize.y * 0.15f });
-	GetTextUI("Menu")->setCharacterSize(225);
-	SetTextUI("1 player", "1p");
-	GetTextUI("1p")->setPosition({ wSize.x * 0.5f, wSize.y * 0.5f });
-	SetTextUI("2 players", "2p");
-	GetTextUI("2p")->setPosition({ wSize.x * 0.5f, wSize.y * 0.75f });
-	SetTextUI("->", "arrow");
-	GetTextUI("arrow")->setPosition({ wSize.x * 0.45f, wSize.y * 0.5f });
+	SetTextUI("Game Mode", "Game Mode", 225, Color::Green);
+	GetTextUI("Game Mode")->setPosition({
+		wSize.x * 0.2f, wSize.y * 0.1f });
+	SetTextUI("Single player", "1p");
+	GetTextUI("1p")->setPosition({ wSize.x * 0.4f, wSize.y * 0.5f });
+	SetTextUI("Local 2 player", "2p");
+	GetTextUI("2p")->setPosition({ wSize.x * 0.4f, wSize.y * 0.65f });
+	SetTextUI("->", "arrow", 75, Color::Green);
+
 	//Character Select
+	SetTextUI("Select", "Select", 150, Color::Green);
+	GetTextUI("Select")->setPosition({
+		wSize.x * 0.35f, wSize.y * 0.1f });
 	SetTextUI("1P", "1pArrow", 100, Color::Red);
-	GetTextUI("1pArrow")->setPosition({ wSize.x * 0.25f, wSize.y * 0.5f });
 	SetTextUI("2P", "2pArrow", 100, Color::Green);
-	GetTextUI("2pArrow")->setPosition({ wSize.x * 0.5f, wSize.y * 0.5f });
+	SetTextUI("Ready", "1pReady", 100, Color::Red);
+	SetTextUI("Ready", "2pReady", 100, Color::Green);
+
 	//EndGame
 	SetTextUI("Game Over", "end", 150, Color::Yellow);
 	GetTextUI("end")->setPosition({ 700, 400 });
+
+    //1pScore
+    SetTextUI("0", "1pScore", 100, Color::Magenta);
+    GetTextUI("1pScore")->setPosition({ 0, 0 });
+
+    //2pScore
+    SetTextUI("0", "2pScore", 100, Color::Magenta);
+    GetTextUI("2pScore")->setPosition({ 1520, 0 });
 }
 
 void UIManager::Release()
