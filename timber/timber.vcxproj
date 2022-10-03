@@ -152,9 +152,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main2.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Player2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpriteGameObject.cpp" />
@@ -168,9 +165,6 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Player2.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="rapidcsv.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
