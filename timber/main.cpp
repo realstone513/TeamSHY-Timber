@@ -5,10 +5,12 @@
 #include "SpriteGameObject.h"
 #include "Player.h"
 #include "Tree.h"
+#include "FloatingObject.h"
 
 #include "ResourceManager.h"
 #include "InputManager.h"
 #include "UIManager.h"
+
 
 using namespace std;
 using namespace sf;
@@ -355,11 +357,29 @@ int main()
 
             if (gamemode == 1)
             {
+                std::vector<float> startVector = { 2000, -300 };
+                std::vector<float> endVector = { -300, 2000 };
+                auto Bee = new FloatingObject(RMI->GetTexture("graphics/bee.png"));
+                auto Beeindex = rand() % 2;
+
+                Bee->Set({ 300,500 }, { 600, 800 },
+                    { startVector[Beeindex], 0 }, { endVector[Beeindex], 0 });
+                gameObjectList.push_back(Bee);
+                for (int i = 0; i < 3; ++i)
+                {
+                    auto cloud = new FloatingObject(RMI->GetTexture("graphics/cloud.png"));
+                    auto index = rand() % 2;
+
+                    cloud->Set({ 100,200 }, { 100, 200 },
+                        { startVector[index], 0 }, { endVector[index], 0 });
+                    gameObjectList.push_back(cloud);
+                }
                 Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
                 tree->SetPosition({ 960, 900 });
                 gameObjectList.push_back(tree);
                 Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
                 gameObjectList.push_back(player1);
+
 
                 for (auto i : gameObjectList)
                 {
@@ -395,7 +415,6 @@ int main()
                         for (auto i : gameObjectList)
                         {
                            i->Update(deltaTime);
-                           
                         }
                     }
                     else
@@ -410,8 +429,6 @@ int main()
                     if (player1->GetPlayerSide() == tree->GetCurrentBranchSide())
                     {
                         player1->Die();
-                        //PlayGame = false;
-                        //window.clear();
                         isGameover = false;
                     }
                     // UI update
