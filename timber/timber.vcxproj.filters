@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player2.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="EffectLog.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -34,6 +33,10 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="main2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player2.h" />
