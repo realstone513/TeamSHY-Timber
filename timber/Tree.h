@@ -19,8 +19,8 @@ private:
 	int is1P2P;
 	bool isChop;
 
-	std::list<EffectLog*> unuseLogs;
-	std::list<EffectLog*> useLogs;
+	vector<list<EffectLog*>> unuseLogs;
+	list<EffectLog*> useLogs;
 
 	vector<Branch*> branches;
 	vector<Vector2f> branchPosArr;
