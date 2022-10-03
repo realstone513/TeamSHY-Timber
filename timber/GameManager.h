@@ -1,33 +1,63 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <list>
 #include "UIManager.h"
+#include <string>
+#include <list>
+#include "InputManager.h"
 #include "SpriteGameObject.h"
 
-using namespace std;
 using namespace sf;
-
-class Scene;
+using namespace std;
 
 class GameManager
 {
-private:
-	RenderWindow*			window;
-	UIManager*				um;
-
-	list<SpriteGameObject*> gameObjectList;
-	Vector2u				wSize;
-
-	//Scene& currentScene;
 public:
+	class Scene
+	{
+	private:
+		Scene(const Scene& ref);
+		Scene& operator= (const Scene& ref);
+
+	protected:
+		list<SpriteGameObject*> gameObjectList;
+		Clock clock;
+		Time dt;
+	public:
+		Scene();
+		virtual ~Scene();
+
+		virtual void Init();
+		virtual void Update();
+		virtual void Draw();
+		virtual void Release();
+		
+		bool playing;
+	};
+
+	class Title : public Scene
+	{
+	public:
+		Title();
+		virtual ~Title() override;
+
+		virtual void Init() override;
+		virtual void Update() override;
+		virtual void Draw() override;
+		virtual void Release() override;
+	};
+
 	GameManager();
 	~GameManager();
 
-	void Init();
-	void Update();
-	void Draw();
-	void Clear();
-	void Release();
+	void			PlayScene(Scene* _scene);
+	RenderWindow*	GetWindow();
+	Scene*			GetScene();
 
-	RenderWindow* GetWindow();
+protected:
+	static RenderWindow*	window;
+	static UIManager*		um;
+
+private:
+	Scene*			currentScene;
+	Vector2u		wSize;
 };

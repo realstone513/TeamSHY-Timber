@@ -11,6 +11,31 @@ UIManager::~UIManager()
 
 void UIManager::Init()
 {
+	//Title
+	SetTextUI("Press Enter to start!", "press enter");
+	GetTextUI("press enter")->setPosition({ 500, 600 });
+	SetTextUI("Timber!", "title", 150, Color::Yellow);
+	GetTextUI("title")->setPosition({ 700, 400 });
+	//Menu
+	SetTextUI("Menu");
+	GetTextUI("Menu")->setPosition({
+		wSize.x * 0.5f, wSize.y * 0.5f });
+	GetTextUI("Menu")->setPosition({ wSize.x * 0.35f, wSize.y * 0.15f });
+	GetTextUI("Menu")->setCharacterSize(225);
+	SetTextUI("1 player", "1p");
+	GetTextUI("1p")->setPosition({ wSize.x * 0.5f, wSize.y * 0.5f });
+	SetTextUI("2 players", "2p");
+	GetTextUI("2p")->setPosition({ wSize.x * 0.5f, wSize.y * 0.75f });
+	SetTextUI("->", "arrow");
+	GetTextUI("arrow")->setPosition({ wSize.x * 0.45f, wSize.y * 0.5f });
+	//Character Select
+	SetTextUI("1P", "1pArrow", 100, Color::Red);
+	GetTextUI("1pArrow")->setPosition({ wSize.x * 0.25f, wSize.y * 0.5f });
+	SetTextUI("2P", "2pArrow", 100, Color::Green);
+	GetTextUI("2pArrow")->setPosition({ wSize.x * 0.5f, wSize.y * 0.5f });
+	//EndGame
+	SetTextUI("Game Over", "end", 150, Color::Yellow);
+	GetTextUI("end")->setPosition({ 700, 400 });
 }
 
 void UIManager::Release()

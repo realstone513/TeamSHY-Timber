@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "ResourceManager.h"
+#include "InputManager.h"
 
 GameManager::GameManager()
 {
@@ -7,72 +8,132 @@ GameManager::GameManager()
     window = new RenderWindow(vm, "timber", Style::Default);
     wSize = window->getSize();
     um = new UIManager(RMI->GetFont("fonts/KOMIKAP_.ttf"));
+    um->Init();
 }
 
 GameManager::~GameManager()
-{
-}
-
-void GameManager::Init()
-{
-    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
-    
-    // UI Init Setting
-    um->Init();
-
-    //Title
-    (*um).SetTextUI("Press Enter to start!", "press enter");
-    (*um).GetTextUI("press enter")->setPosition({ 500, 600 });
-    (*um).SetTextUI("Timber!", "title", 150, Color::Yellow);
-    (*um).GetTextUI("title")->setPosition({ 700, 400 });
-    //Menu
-    (*um).SetTextUI("Menu");
-    (*um).GetTextUI("Menu")->setPosition({
-        wSize.x * 0.5f, wSize.y * 0.5f });
-    (*um).GetTextUI("Menu")->setPosition({ wSize.x * 0.35f, wSize.y * 0.15f });
-    (*um).GetTextUI("Menu")->setCharacterSize(225);
-    (*um).SetTextUI("1 player", "1p");
-    (*um).GetTextUI("1p")->setPosition({ wSize.x * 0.5f, wSize.y * 0.5f });
-    (*um).SetTextUI("2 players", "2p");
-    (*um).GetTextUI("2p")->setPosition({ wSize.x * 0.5f, wSize.y * 0.75f });
-    (*um).SetTextUI("->", "arrow");
-    (*um).GetTextUI("arrow")->setPosition({ wSize.x * 0.45f, wSize.y * 0.5f });
-    //Character Select
-    (*um).SetTextUI("1P", "1pArrow", 100, Color::Red);
-    (*um).GetTextUI("1pArrow")->setPosition({ wSize.x * 0.25f, wSize.y * 0.5f });
-    (*um).SetTextUI("2P", "2pArrow", 100, Color::Green);
-    (*um).GetTextUI("2pArrow")->setPosition({ wSize.x * 0.5f, wSize.y * 0.5f });
-    //EndGame
-    (*um).SetTextUI("Game Over", "end", 150, Color::Yellow);
-    (*um).GetTextUI("end")->setPosition({ 700, 400 });
-}
-
-void GameManager::Update()
-{
-}
-
-void GameManager::Draw()
-{
-}
-
-void GameManager::Clear()
-{
-    for (auto go : gameObjectList)
-    {
-        go->Release();
-        delete go;
-    }
-    gameObjectList.clear();
-}
-
-void GameManager::Release()
 {
     um->Release();
     delete um;
     delete window;
 }
 
+void GameManager::PlayScene(Scene* _scene)
+{
+    currentScene = _scene;
+}
+
 RenderWindow* GameManager::GetWindow()
 {
     return window;
+}
+
+GameManager::Scene* GameManager::GetScene()
+{
+    return currentScene;
+}
+
+// Scene
+GameManager::Scene::Scene(const Scene& ref)
+{
+}
+GameManager::Scene& GameManager::Scene::operator=(const Scene& ref)
+{
+    return *this;
+}
+
+GameManager::Scene::Scene()
+    : playing(true)
+{
+}
+
+GameManager::Scene::~Scene()
+{
+}
+
+void GameManager::Scene::Init()
+{
+}
+
+void GameManager::Scene::Update()
+{
+    dt = clock.restart();
+    Event ev;
+    InputManager::ClearInput();
+
+    while (window->pollEvent(ev))
+    {
+        InputManager::UpdateInput(ev);
+    }
+}
+
+void GameManager::Scene::Draw()
+{
+    window->clear();
+}
+
+void GameManager::Scene::Release()
+{
+	for (auto go : gameObjectList)
+	{
+		go->Release();
+		delete go;
+	}
+	gameObjectList.clear();
+}
+
+// Title
+GameManager::Title::Title()
+    : Scene()
+{
+    Init();
+}
+
+GameManager::Title::~Title()
+{
+}
+
+void GameManager::Title::Init()
+{
+    Scene::Init();
+
+    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+}
+
+void GameManager::Title::Update()
+{
+    Scene::Update();
+
+    if (InputManager::GetKeyDown(Keyboard::Key::Return))
+    {
+        playing = false;
+        return;
+    }
+    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    {
+        window->close();
+        return;
+    }
+
+    for (auto go : gameObjectList)
+    {
+        go->Update(dt.asSeconds());
+    }
+}
+
+void GameManager::Title::Draw()
+{
+    Scene::Draw();
+
+    for (auto go : gameObjectList)
+    {
+        go->Draw(*window);
+    }
+    window->draw(*um->GetTextUI("title"));
+    window->draw(*um->GetTextUI("press enter"));
+    window->display();
+}
+
+void GameManager::Title::Release()
+{
 }
