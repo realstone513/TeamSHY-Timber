@@ -1,16 +1,11 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "Tree.h"
-#include "Scene.h"
-
-//#include "InputManager.h"
-//#include "ResourceManager.h"
 
 int main()
 {
     GameManager gm;
 
-    //instance
     while (gm.GetWindow()->isOpen())
     {
         /*bool b_Title = true;
@@ -26,74 +21,23 @@ int main()
         bool twoPlayready = false;
         int ready = 0;*/
 
-        gm.PlayScene(new GameManager::Title());
-        //Title Scene
+        gm.PlayScene(new Title());
         while (gm.GetScene()->playing)
         {
-            //gm.GetScene()->Update();
-            //gm.GetScene()->Draw();
+            gm.GetScene()->Update();
+            gm.GetScene()->Draw();
         }
+        gm.ReleaseScene();
 
-        ////Menu Scene
-        //while (SelectMenu)
-        //{
-        //    Time dt = clock.restart();
-        //    Event ev;
-        //    InputManager::ClearInput();
-        //    while (window.pollEvent(ev))
-        //    {
-        //        InputManager::UpdateInput(ev);
-        //    }
+        gm.PlayScene(new Menu(gm.gameMode));
+        while (gm.GetScene()->playing)
+        {
+            gm.GetScene()->Update();
+            gm.GetScene()->Draw();
+        }
+        gm.ReleaseScene();
 
-        //    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
-        //    {
-        //        //gamemode = 0;
-        //        SelectMenu = false;
-        //        Title = true;
-        //    }
-        //    if (InputManager::GetKeyDown(Keyboard::Key::Up))
-        //    {
-        //        gamemode = 1;
-        //    }
-        //    if (InputManager::GetKeyDown(Keyboard::Key::Down))
-        //    {
-        //        gamemode = 2;
-        //    }
-        //    if (InputManager::GetKeyDown(Keyboard::Return) && gamemode != 0)
-        //    {
-        //        SelectMenu = false;
-        //        SelectCharacter = true;
-        //    }
-
-        //    float deltaTime = dt.asSeconds();
-
-        //    //Update
-        //    for (auto go : gameObjectList)
-        //    {
-        //        go->Update(deltaTime);
-        //    }
-
-        //    //Draw
-        //    window.clear();
-        //    for (auto go : gameObjectList)
-        //    {
-        //        go->Draw(window);
-        //    }
-        //    if (gamemode == 1)
-        //    {
-        //        um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.5f });
-        //    }
-        //    else if (gamemode == 2)
-        //    {
-        //        um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.75f });
-        //    }
-        //    window.draw(*um.GetTextUI("arrow"));
-        //    window.draw(*um.GetTextUI("Menu"));
-        //    window.draw(*(um.GetTextUI("1p")));
-        //    window.draw(*(um.GetTextUI("2p")));
-
-        //    window.display();
-        //}
+    }
 
         ////Character select
         //while (SelectCharacter)
@@ -409,7 +353,7 @@ int main()
             delete go;
         }
         gameObjectList.clear();*/
-    }
+    //}
 
     return 0;
 }
