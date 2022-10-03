@@ -16,7 +16,7 @@ private:
 	Vector2u						wSize;
 
 public:
-	UIManager(Font& _font, Vector2u windowSize);
+	UIManager(Font& _font, Vector2u windowSize = { 0, 0 });
 	~UIManager();
 
 	void Init();

@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="Branch.cpp" />
     <ClCompile Include="EffectLog.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -154,6 +155,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpriteGameObject.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -162,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Branch.h" />
     <ClInclude Include="EffectLog.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player2.h">
@@ -169,6 +172,7 @@
     </ClInclude>
     <ClInclude Include="rapidcsv.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteGameObject.h" />
     <ClInclude Include="Tree.h" />
