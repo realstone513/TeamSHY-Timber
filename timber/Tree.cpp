@@ -75,6 +75,7 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 		if (i == 0)
 		{
 			branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+			branches[i]->SetSide(Sides::None);
 		}
 		else
 		{
@@ -153,7 +154,6 @@ void Tree::Update(float dt)
 		(*it)->Update(dt);
 		if (!(*it)->GetActive())
 		{
-			
 			unuseLogs[(int)(*it)->GetSide()].push_back(*it);
 			it = useLogs.erase(it);
 		}
@@ -168,20 +168,20 @@ void Tree::Update(float dt)
 		{
 			if (InputManager::GetKeyDown(Keyboard::A))
 			{
-				ShowLogEffect(Sides::Left);
+				ShowLogEffect(branches[currentBranche]->GetSide());
 			}
 			if (InputManager::GetKeyDown(Keyboard::D))
 			{
-				ShowLogEffect(Sides::Right);
+				ShowLogEffect(branches[currentBranche]->GetSide());
 			}
 		}
 		else
 		{
-			if (side == Sides::Left && InputManager::GetKeyUp(Keyboard::A))
+			if (InputManager::GetKeyUp(Keyboard::A))
 			{
 				isChop = false;
 			}
-			if (side == Sides::Right && InputManager::GetKeyUp(Keyboard::D))
+			if (InputManager::GetKeyUp(Keyboard::D))
 			{
 				isChop = false;
 			}
@@ -269,7 +269,7 @@ void Tree::ShowLogEffect(Sides side)
 {
 	isChop = true;
 	this->side = side;
-	if (unuseLogs.empty())
+	if (unuseLogs[(int)side].empty())
 		return;
 
 	auto log = unuseLogs[(int)side].front();
@@ -277,12 +277,11 @@ void Tree::ShowLogEffect(Sides side)
 	useLogs.push_back(log);
 
 	Vector2f force;
-	int forceRanX = Utils::Range(300, 800);
+	int forceRanX = 300; //Utils::Range(300, 800);
 	force.x = side == Sides::Left ? forceRanX : -forceRanX;
 	force.y = -800;
-	float aForceRan = Utils::Range(360, 1800);
+	float aForceRan = 360; // Utils::Range(360, 1800);
 	float aForce = side == Sides::Left ? aForceRan : -aForceRan;
-
 
 	Vector2f pos;
 	
