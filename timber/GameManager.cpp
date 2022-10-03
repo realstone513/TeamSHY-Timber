@@ -9,7 +9,7 @@ GameManager::GameManager()
     VideoMode vm(1920, 1080);
     window = new RenderWindow(vm, "timber", Style::Default);
     wSize = window->getSize();
-    um = new UIManager(RMI->GetFont("fonts/KOMIKAP_.ttf"), wSize);
+    um = new UIManager(PRMI->GetFont("fonts/KOMIKAP_.ttf"), wSize);
     um->Init();
 }
 

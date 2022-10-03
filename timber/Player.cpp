@@ -2,8 +2,8 @@
 #include "InputManager.h"
 #include "Tree.h"
 
-Player::Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Texture& axe)
-    :SpriteGameObject(player), texPlayer(player), GameMode(gamemode), is1P2P(is1P2P), isChop(false), treePos(treepos), originalPos(2), score(0)
+Player::Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Texture& axe, int characterType)
+    : SpriteGameObject(player), texPlayer(player), gameMode(gamemode), is1P2P(is1P2P), isChop(false), treePos(treepos), originalPos(2), score(0)
 {
     texAxe.setTexture(axe);
     Utils::SetOrigin(texAxe, Origins::MR);
@@ -15,6 +15,18 @@ Player::Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Text
 
     score = 0;
     scoreStatus = true;
+
+    if (gameMode == 1)
+    {
+        addScore = 10;
+        minusScore = 10;
+    }
+    else
+    {
+        Vector2i temp = RMI->GetStatus(characterType);
+        addScore = temp.x;
+        minusScore = temp.y;
+    }
 }
 
 Player::~Player()
@@ -47,8 +59,8 @@ void Player::Init()
     score = 0;
     scoreStatus = true;
 
-    chopSound.setBuffer(RMI->GetSoundBuffer("sound/chop.wav"));
-    deathSound.setBuffer(RMI->GetSoundBuffer("sound/death.wav"));
+    chopSound.setBuffer(PRMI->GetSoundBuffer("sound/chop.wav"));
+    deathSound.setBuffer(PRMI->GetSoundBuffer("sound/death.wav"));
 }
 
 void Player::Release()
@@ -67,20 +79,22 @@ void Player::Update(float dt)
                 Chop(Sides::Left);
                 if ( !scoreStatus )
                 {
-                    score -= 20;
+                    score -= minusScore;
                     scoreStatus = true;
                 }
-                score += 10;
+                else
+                    score += addScore;
             }
             if (InputManager::GetKeyDown(Keyboard::D))
             {
                 Chop(Sides::Right);
                 if ( !scoreStatus )
                 {
-                    score -= 20;
+                    score -= minusScore;
                     scoreStatus = true;
                 }
-                score += 10;
+                else
+                    score += addScore;
             }
         }
         else
@@ -104,20 +118,22 @@ void Player::Update(float dt)
                 Chop(Sides::Left);
                 if ( !scoreStatus )
                 {
-                    score -= 20;
+                    score -= minusScore;
                     scoreStatus = true;
                 }
-                score += 10;
+                else
+                    score += addScore;
             }
             if (InputManager::GetKeyDown(Keyboard::Right))
             {
                 Chop(Sides::Right);
                 if ( !scoreStatus )
                 {
-                    score -= 20;
+                    score -= minusScore;
                     scoreStatus = true;
                 }
-                score += 10;
+                else
+                    score += addScore;
             }
         }
         else
@@ -181,7 +197,7 @@ void Player::Die()
     }
     isAlive = false;
     isChop = true;
-    sprite.setTexture(RMI->GetTexture("graphics/rip.png"), true);
+    sprite.setTexture(PRMI->GetTexture("graphics/rip.png"), true);
     SetFlipX(false);
     Utils::SetOrigin(sprite, Origins::BC);
 }
@@ -200,4 +216,3 @@ void Player::SetScoreStatus()
 {
     scoreStatus = false;
 }
-

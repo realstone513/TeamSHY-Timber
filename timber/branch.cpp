@@ -19,15 +19,15 @@ void Branch::SetSide(Sides side,int gamemode)
         switch (side)
         {
         case Sides::Left:
-            sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_L.png"));
+            sprite.setTexture(PRMI->GetTexture("graphics/1P_log(b)_L.png"));
             this->side = Sides::Left;
             break;
         case Sides::Right:
-            sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_R.png"));
+            sprite.setTexture(PRMI->GetTexture("graphics/1P_log(b)_R.png"));
             this->side = Sides::Right;
             break;
         case Sides::None:
-            sprite.setTexture(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+            sprite.setTexture(PRMI->GetTexture("graphics/1P_log(b)_N.png"));
             this->side = Sides::None;
             break;
         }
@@ -37,15 +37,15 @@ void Branch::SetSide(Sides side,int gamemode)
         switch (side)
         {
         case Sides::Left:
-            sprite.setTexture(RMI->GetTexture("graphics/2P_log(b)_L.png"));
+            sprite.setTexture(PRMI->GetTexture("graphics/2P_log(b)_L.png"));
             this->side = Sides::Left;
             break;
         case Sides::Right:
-            sprite.setTexture(RMI->GetTexture("graphics/2P_log(b)_R.png"));
+            sprite.setTexture(PRMI->GetTexture("graphics/2P_log(b)_R.png"));
             this->side = Sides::Right;
             break;
         case Sides::None:
-            sprite.setTexture(RMI->GetTexture("graphics/2P_log(b)_N.png"));
+            sprite.setTexture(PRMI->GetTexture("graphics/2P_log(b)_N.png"));
             this->side = Sides::None;
             break;
         }

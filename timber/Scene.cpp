@@ -89,20 +89,20 @@ void Title::Init()
 {
     Scene::Init();
 
-    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    gameObjectList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/background.png")));
     
     vector<float> startVector = { 2000, -300 };
     vector<float> endVector = { -300, 2000 };
     for (int i = 0; i < 3; ++i)
     {
-        auto cloud = new FloatingObject(RMI->GetTexture("graphics/cloud.png"));
+        auto cloud = new FloatingObject(PRMI->GetTexture("graphics/cloud.png"));
         auto index = rand() % 2;
 
         cloud->Set({ 100, 200 }, { 100, 200 },
             { startVector[index], 0 }, { endVector[index], 0 });
         gameObjectList.push_back(cloud);
     }
-    auto Bee = new FloatingObject(RMI->GetTexture("graphics/bee.png"));
+    auto Bee = new FloatingObject(PRMI->GetTexture("graphics/bee.png"));
     auto Beeindex = rand() % 2;
 
     Bee->Set({ 300, 500 }, { 600, 800 },
@@ -173,7 +173,7 @@ void SelectGameMode::Init()
 {
     Scene::Init();
 
-    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    gameObjectList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/background.png")));
 }
 
 void SelectGameMode::Update()
@@ -262,12 +262,12 @@ void SelectCharacter::Init()
 {
     Scene::Init();
 
-    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    gameObjectList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/background.png")));
     
     list<SpriteGameObject*> charcterList;
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(200, 400)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(800, 400)));
-    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));   
+    charcterList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/player_red.png"), Vector2f(200, 400)));
+    charcterList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/player_green.png"), Vector2f(800, 400)));
+    charcterList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));   
     for (auto c : charcterList)
     {
         c->setScale(2, 2);
@@ -427,6 +427,16 @@ void SelectCharacter::Draw()
 		window->draw(*um->GetTextUI("1pArrow"));
 		window->draw(*um->GetTextUI("2pArrow"));
     }
+    if (gameMode == 2)
+    {
+        window->draw(*um->GetTextUI("add1"));
+        window->draw(*um->GetTextUI("minus1"));
+        window->draw(*um->GetTextUI("add2"));
+        window->draw(*um->GetTextUI("minus2"));
+        window->draw(*um->GetTextUI("add3"));
+        window->draw(*um->GetTextUI("minus3"));
+    }
+
     window->draw(*um->GetTextUI("Select"));
     if (ready1p)
         window->draw(*um->GetTextUI("1pReady"));
@@ -457,12 +467,12 @@ GamePlay::GamePlay(int _mode, int player1, int player2)
     // 타이머 바 크기 조절에 필요한 값
     timerBarSize = { 400, 80 };
     // 난이도에 필요한 두 값
-    duration = gameMode == 1 ? 5.f : 30.f;
+    duration = gameMode == 1 ? 5.f : 25.f;
     bonusTime = 0.25f;
 
     timer = duration;
 
-    timeOutSound.setBuffer(RMI->GetSoundBuffer("sound/out_of_time.wav"));
+    timeOutSound.setBuffer(PRMI->GetSoundBuffer("sound/out_of_time.wav"));
     timeOutSound.setVolume(50);
     Init();
 }
@@ -475,13 +485,13 @@ void GamePlay::Init()
 {
     Scene::Init();
 
-    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    gameObjectList.push_back(new SpriteGameObject(PRMI->GetTexture("graphics/background.png")));
     
     vector<float> startVector = { 2000, -300 };
     vector<float> endVector = { -300, 2000 };
     for (int i = 0; i < 3; ++i)
     {
-        auto cloud = new FloatingObject(RMI->GetTexture("graphics/cloud.png"));
+        auto cloud = new FloatingObject(PRMI->GetTexture("graphics/cloud.png"));
         auto index = rand() % 2;
 
         cloud->Set({ 100, 200 }, { 100, 200 },
@@ -495,27 +505,27 @@ void GamePlay::Init()
         "graphics/player_yellow.png" };
     if (gameMode == 1) // 1P
     {
-        tree1 = new Tree(RMI->GetTexture("graphics/tree.png"), gameMode, 1);
+        tree1 = new Tree(PRMI->GetTexture("graphics/tree.png"), gameMode, 1);
         tree1->SetPosition({ 960, 900 });
         gameObjectList.push_back(tree1);
-        player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition(), RMI->GetTexture("graphics/axe.png"));
+        player1 = new Player(PRMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition(), PRMI->GetTexture("graphics/axe.png"), character1p);
         gameObjectList.push_back(player1);
     }
     else // 2P
     {
-        tree1 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gameMode, 1);
+        tree1 = new Tree(PRMI->GetTexture("graphics/2Ptree.png"), gameMode, 1);
 		tree1->SetPosition({ 480, 900 });
 		gameObjectList.push_back(tree1);
-		tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gameMode, 2);
+		tree2 = new Tree(PRMI->GetTexture("graphics/2Ptree.png"), gameMode, 2);
 		tree2->SetPosition({ 1440, 900 });
 		gameObjectList.push_back(tree2);
-		player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition(), RMI->GetTexture("graphics/axe.png"));
+		player1 = new Player(PRMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition(), PRMI->GetTexture("graphics/axe.png"), character1p);
 		gameObjectList.push_back(player1);
-		player2 = new Player(RMI->GetTexture(charcterIndex[character2p]), gameMode, 2, tree2->GetPosition(), RMI->GetTexture("graphics/axe.png"));
+		player2 = new Player(PRMI->GetTexture(charcterIndex[character2p]), gameMode, 2, tree2->GetPosition(), PRMI->GetTexture("graphics/axe.png"), character2p);
 		gameObjectList.push_back(player2);
     }
 
-    auto Bee = new FloatingObject(RMI->GetTexture("graphics/bee.png"));
+    auto Bee = new FloatingObject(PRMI->GetTexture("graphics/bee.png"));
     auto Beeindex = rand() % 2;
 
     Bee->Set({ 300, 500 }, { 600, 800 },
@@ -566,7 +576,7 @@ void GamePlay::Update()
     if (gameOver || pause)
         return;
 
-    if (gameMode == 1)
+    if (gameMode == 1) // 1P
     {
         if (InputManager::GetKeyDown(Keyboard::Key::A) ||
             InputManager::GetKeyDown(Keyboard::Key::D))
@@ -576,6 +586,17 @@ void GamePlay::Update()
             player1->Die();
             gameOver = true;
         }
+    }
+    else // 2P
+    {
+        if (player1->GetPlayerSide() == tree1->GetCurrentBranchSide())
+		{
+			player1->SetScoreStatus();
+		}
+		if (player2->GetPlayerSide() == tree2->GetCurrentBranchSide())
+		{
+			player2->SetScoreStatus();
+		}
     }
 
     float normTime = timer / duration; // normalize
@@ -604,7 +625,19 @@ void GamePlay::Draw()
         window->draw(*(um->GetTextUI("press enter")));
     }
     if (gameOver)
-        window->draw(*(um->GetTextUI("end")));
+    {
+        if (gameMode == 1)
+            window->draw(*(um->GetTextUI("end")));
+        else
+        {
+            if (player1->GetScore() > player2->GetScore())
+                window->draw(*(um->GetTextUI("1PWin")));
+            else if (player1->GetScore() < player2->GetScore())
+                window->draw(*(um->GetTextUI("2PWin")));
+            else
+                window->draw(*(um->GetTextUI("draw")));
+        }
+    }
 
     window->draw(*(um->GetTextUI("1pScore")));
     if (gameMode == 2)

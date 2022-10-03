@@ -2,11 +2,13 @@
 #include "rapidcsv.h"
 #include <vector>
 
-string ResourceManager::Filepath = "Resources.csv";
+string ResourceManager::ResourceFilepath = "Resources.csv";
+string ResourceManager::StatusFilepath = "Status.csv";
 
 ResourceManager::ResourceManager()
 {
 	LoadAll();
+	LoadStatus();
 }
 
 ResourceManager::~ResourceManager()
@@ -31,7 +33,7 @@ bool ResourceManager::LoadAll()
 {
 	ReleaseAll();
 
-	rapidcsv::Document doc(Filepath, rapidcsv::LabelParams(0, -1));
+	rapidcsv::Document doc(ResourceFilepath, rapidcsv::LabelParams(0, -1));
 
 	vector<string> keys = doc.GetColumn<string>(0);
 	vector<int> types = doc.GetColumn<int>(1);
@@ -119,4 +121,24 @@ SoundBuffer* ResourceManager::GetSoundBuffer(string id)
 {
 	auto soundbf = soundMap.find(id);
 	return (soundbf != soundMap.end()) ? soundbf->second : nullptr;
+}
+
+void	ResourceManager::LoadStatus()
+{
+	rapidcsv::Document doc(StatusFilepath, rapidcsv::LabelParams(0, -1));
+
+	vector<int> character = doc.GetColumn<int>(0);
+	vector<int> plus = doc.GetColumn<int>(1);
+	vector<int> minus = doc.GetColumn<int>(2);
+
+	for (int i = 0; i < doc.GetRowCount(); i++)
+	{
+		statusVector.push_back({ plus[i], minus[i] });
+	}
+}
+
+Vector2i	ResourceManager::GetStatus(int type)
+{
+	if (type >= 0 && type < statusVector.size())
+	return statusVector[type];
 }

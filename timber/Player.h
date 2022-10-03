@@ -13,7 +13,7 @@ private:
 	Sound chopSound;
 	Sound deathSound;
 
-	int GameMode;
+	int gameMode;
 	int is1P2P;
 	Sides side;
 	Sides currentbranchside;
@@ -22,6 +22,8 @@ private:
 	bool isChop;
 
 	int score;
+	int addScore;
+	int minusScore;
 	bool scoreStatus;
 
 	Vector2f treePos;
@@ -29,7 +31,7 @@ private:
 	Vector2f axePos;
 
 public:
-	Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Texture& axe);
+	Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Texture& axe, int characterType);
 	~Player();
 
 	virtual void Init();

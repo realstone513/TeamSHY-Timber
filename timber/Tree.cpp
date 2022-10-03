@@ -17,19 +17,19 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 				{
 				case 0:
 				{
-					auto log = new EffectLog(RMI->GetTexture("graphics/1P_log(b)_L.png"), 5.f,(Sides)i);
+					auto log = new EffectLog(PRMI->GetTexture("graphics/1P_log(b)_L.png"), 5.f,(Sides)i);
 					unuseLogs[i].push_back(log);
 					break;
 				}
 				case 1:
 				{
-					auto log = new EffectLog(RMI->GetTexture("graphics/1P_log(b)_R.png"), 5.f, (Sides)i);
+					auto log = new EffectLog(PRMI->GetTexture("graphics/1P_log(b)_R.png"), 5.f, (Sides)i);
 					unuseLogs[i].push_back(log);
 					break;
 				}
 				case 2:
 				{
-					auto log = new EffectLog(RMI->GetTexture("graphics/1P_log(b)_N.png"), 5.f, (Sides)i);
+					auto log = new EffectLog(PRMI->GetTexture("graphics/1P_log(b)_N.png"), 5.f, (Sides)i);
 					unuseLogs[i].push_back(log);
 					break;
 				}
@@ -47,19 +47,19 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 				{
 				case 0:
 				{
-					auto log = new EffectLog(RMI->GetTexture("graphics/2P_log(b)_L.png"), 5.f, (Sides)i);
+					auto log = new EffectLog(PRMI->GetTexture("graphics/2P_log(b)_L.png"), 5.f, (Sides)i);
 					unuseLogs[i].push_back(log);
 					break;
 				}
 				case 1:
 				{
-					auto log = new EffectLog(RMI->GetTexture("graphics/2P_log(b)_R.png"), 5.f, (Sides)i);
+					auto log = new EffectLog(PRMI->GetTexture("graphics/2P_log(b)_R.png"), 5.f, (Sides)i);
 					unuseLogs[i].push_back(log);
 					break;
 				}
 				case 2:
 				{
-					auto log = new EffectLog(RMI->GetTexture("graphics/2P_log(b)_N.png"), 5.f, (Sides)i);
+					auto log = new EffectLog(PRMI->GetTexture("graphics/2P_log(b)_N.png"), 5.f, (Sides)i);
 					unuseLogs[i].push_back(log);
 					break;
 				}
@@ -75,7 +75,7 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 		{
 			if (i == 0)
 			{
-				branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+				branches[i] = new Branch(PRMI->GetTexture("graphics/1P_log(b)_N.png"));
 				branches[i]->SetSide(Sides::None, GameMode);
 			}
 			else
@@ -83,15 +83,15 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 				switch ((Sides)Utils::Range(0, 2))
 				{
 				case Sides::Left:
-					branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_L.png"));
+					branches[i] = new Branch(PRMI->GetTexture("graphics/1P_log(b)_L.png"));
 					branches[i]->SetSide(Sides::Left,GameMode);
 					break;
 				case Sides::Right:
-					branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_R.png"));
+					branches[i] = new Branch(PRMI->GetTexture("graphics/1P_log(b)_R.png"));
 					branches[i]->SetSide(Sides::Right, GameMode);
 					break;
 				case Sides::None:
-					branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+					branches[i] = new Branch(PRMI->GetTexture("graphics/1P_log(b)_N.png"));
 					branches[i]->SetSide(Sides::None, GameMode);
 					break;
 				}
@@ -101,7 +101,7 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 		{
 			if (i == 0)
 			{
-				branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_N.png"));
+				branches[i] = new Branch(PRMI->GetTexture("graphics/2P_log(b)_N.png"));
 				branches[i]->SetSide(Sides::None, GameMode);
 			}
 			else
@@ -109,15 +109,15 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 				switch ((Sides)Utils::Range(0, 2))
 				{
 				case Sides::Left:
-					branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_L.png"));
+					branches[i] = new Branch(PRMI->GetTexture("graphics/2P_log(b)_L.png"));
 					branches[i]->SetSide(Sides::Left, GameMode);
 					break;
 				case Sides::Right:
-					branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_R.png"));
+					branches[i] = new Branch(PRMI->GetTexture("graphics/2P_log(b)_R.png"));
 					branches[i]->SetSide(Sides::Right, GameMode);
 					break;
 				case Sides::None:
-					branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_N.png"));
+					branches[i] = new Branch(PRMI->GetTexture("graphics/2P_log(b)_N.png"));
 					branches[i]->SetSide(Sides::None, GameMode);
 					break;
 				}

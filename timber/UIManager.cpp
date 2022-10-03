@@ -1,4 +1,5 @@
 #include "UIManager.h"
+#include "ResourceManager.h"
 
 UIManager::UIManager(Font& _font, Vector2u windowSize)
 	: font(_font), wSize(windowSize)
@@ -41,6 +42,27 @@ void UIManager::Init()
 	SetTextUI("Ready", "1pReady", 100, Color::Red);
 	SetTextUI("Ready", "2pReady", 100, Color::Green);
 
+	SetTextUI("+" + to_string(RMI->GetStatus(0).x), "add1", 50, Color::Green);
+	GetTextUI("add1")->setPosition({
+		wSize.x * 0.24f, wSize.y * 0.4f });
+	SetTextUI("-" + to_string(RMI->GetStatus(0).y), "minus1", 50, Color::Red);
+	GetTextUI("minus1")->setPosition({
+		wSize.x * 0.24f, wSize.y * 0.45f });
+
+	SetTextUI("+" + to_string(RMI->GetStatus(1).x), "add2", 50, Color::Green);
+	GetTextUI("add2")->setPosition({
+		wSize.x * 0.56f, wSize.y * 0.4f });
+	SetTextUI("-" + to_string(RMI->GetStatus(1).y), "minus2", 50, Color::Red);
+	GetTextUI("minus2")->setPosition({
+		wSize.x * 0.56f, wSize.y * 0.45f });
+
+	SetTextUI("+" + to_string(RMI->GetStatus(2).x), "add3", 50, Color::Green);
+	GetTextUI("add3")->setPosition({
+		wSize.x * 0.88f, wSize.y * 0.4f });
+	SetTextUI("-" + to_string(RMI->GetStatus(2).y), "minus3", 50, Color::Red);
+	GetTextUI("minus3")->setPosition({
+		wSize.x * 0.88f, wSize.y * 0.45f });
+
 	//GamePlay
     Vector2f timerBarSize(400, 80);
 	SetRectangleUI("timer Bar", timerBarSize, Color::Red);
@@ -57,6 +79,12 @@ void UIManager::Init()
 	//EndGame
 	SetTextUI("Game Over!", "end", 150, Color::Yellow);
 	GetTextUI("end")->setPosition({ wSize.x * 0.3f,  wSize.x * 0.2f });
+    SetTextUI("Player 1 Win!", "1PWin", 150, Color::Yellow);
+    GetTextUI("1PWin")->setPosition({ wSize.x * 0.22f, wSize.y * 0.33f });
+    SetTextUI("Player 2 Win!", "2PWin", 150, Color::Yellow);
+    GetTextUI("2PWin")->setPosition({ wSize.x * 0.22f, wSize.y * 0.33f });
+    SetTextUI("Draw!", "draw", 150, Color::Yellow);
+    GetTextUI("draw")->setPosition({ wSize.x * 0.36f, wSize.y * 0.33f });
 }
 
 void UIManager::Release()

@@ -9,7 +9,8 @@
 // 파일 이름 목록이 담긴 csv파일 사용해서 파일입력 & 리소스 로드
 // 로드 & 릴리즈, Get()
 
-#define RMI *ResourceManager::GetInstance()
+#define PRMI *ResourceManager::GetInstance()
+#define RMI ResourceManager::GetInstance()
 
 using namespace std;
 using namespace sf;
@@ -25,10 +26,11 @@ private:
 	map<string, Texture*>		texMap;
 	map<string, Font*>			fontMap;
 	map<string, SoundBuffer*>	soundMap;
-	static string Filepath;
 
-	// 템플릿으로 일반화 할 수 있음
-	// map<string, T*> resourceMap;
+	vector<Vector2i>			statusVector;
+
+	static string ResourceFilepath;
+	static string StatusFilepath;
 
 public:
 	ResourceManager();
@@ -45,4 +47,7 @@ public:
 	Texture*		GetTexture(string id);
 	Font*			GetFont(string id);
 	SoundBuffer*	GetSoundBuffer(string id);
+
+	void			LoadStatus();
+	Vector2i		GetStatus(int type);
 };
