@@ -6,11 +6,11 @@ Player::Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Text
     :SpriteGameObject(player), texPlayer(player), GameMode(gamemode), is1P2P(is1P2P), isChop(false), treePos(treepos), originalPos(2), score(0)
 {
     texAxe.setTexture(axe);
-    Utils::SetOrigin(texAxe, Origins::ML);
+    Utils::SetOrigin(texAxe, Origins::MR);
     Vector2f size = GetSize();
 
     axePos.x = -size.x * 0.5f + 70;
-    axePos.y = -size.y * 0.5f + 30;
+    axePos.y = -size.y * 0.5f;
     SetOrigin(Origins::BC);
 
     score = 0;
