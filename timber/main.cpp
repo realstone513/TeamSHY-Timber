@@ -53,13 +53,25 @@ int main()
     int twoPScore = 0;
     um.SetTextUI(to_string(twoPScore), "2pScore", 100, Color::Magenta);
     um.GetTextUI("2pScore")->setPosition({ 1520, 0 });
-
+    //EndText
+    um.SetTextUI("Game Over!", "end", 150, Color::Yellow);
+    um.GetTextUI("end")->setPosition({ 700, 400 });
+    //1pGameEnd
+    um.SetTextUI("Player 1 Win!", "1PWin", 150, Color::Yellow);
+    um.GetTextUI("1PWin")->setPosition({ 500, 400 });
+    //2pGameEnd
+    um.SetTextUI("Player 2 Win!", "2PWin", 150, Color::Yellow);
+    um.GetTextUI("2PWin")->setPosition({ 500, 400 });
+    //TieGameEnd
+    um.SetTextUI("TIE", "tie", 150, Color::Yellow);
+    um.GetTextUI("tie")->setPosition({ 800, 400 });
+    
     //instance
     Clock clock;
 
     while (window.isOpen())
     {
-        //game 遺꾧린
+        //game ?�꾧�?
         bool Title = true;
         bool SelectMenu = false;
         bool SelectCharacter = false;
@@ -368,7 +380,7 @@ int main()
 
                 while (PlayGame)
                 {
-                    Time dt = clock.restart(); //?댁쟾 ?낅뜲?댄듃 ?쒓컙怨??꾩옱 ?낅뜲?댄듃 ?쒓컙 李⑥씠 湲곕줉
+                    Time dt = clock.restart(); //??�쟾 ??�뜲??�듃 ??�컙???꾩옱 ??�뜲??�듃 ??�컙 ?�⑥??湲곕�?
                     Event ev;
                     InputManager::ClearInput();
 
@@ -378,7 +390,7 @@ int main()
                     }
                     if (InputManager::GetKeyDown(Keyboard::Key::Escape))
                     {
-
+                        //um.SetTextUI("", "end", 150, Color::Yellow);
                         ready = 0;
                         gamemode = 1;
                         Title = true;
@@ -394,8 +406,7 @@ int main()
                     {
                         for (auto i : gameObjectList)
                         {
-                           i->Update(deltaTime);
-                           
+                           i->Update(deltaTime);  
                         }
                     }
                     else
@@ -407,6 +418,7 @@ int main()
                     {
                         i->Draw(window);
                     }
+
                     if (player1->GetPlayerSide() == tree->GetCurrentBranchSide())
                     {
                         player1->Die();
@@ -419,9 +431,10 @@ int main()
                     if (timer < 0.f)
                     {
                         timer = 0.f;
+                        isGameover = false;
                     }
 
-                    float normTime = timer / duration; // ?뺢퇋??
+                    float normTime = timer / duration; // ?�?��??
                     float timerSizeX = timerBarSize.x * normTime;
                     um.GetRectangleUI("timer Bar")->
                         setSize({ timerSizeX, timerBarSize.y });
@@ -431,6 +444,11 @@ int main()
                     onePScore = player1->GetScore();
                     um.SetTextUI(to_string(onePScore), "1pScore", 100, Color::Magenta);
                     window.draw(*(um.GetTextUI("1pScore")));
+                    if ( !isGameover )
+                    {
+                        window.draw(*(um.GetTextUI("end")));
+                    }
+                   
                     window.draw(*um.GetRectangleUI("timer Bar"));
                     window.display();
 
@@ -455,7 +473,7 @@ int main()
                 }
                 while (PlayGame)
                 {
-                    Time dt = clock.restart(); //?댁쟾 ?낅뜲?댄듃 ?쒓컙怨??꾩옱 ?낅뜲?댄듃 ?쒓컙 李⑥씠 湲곕줉
+                    Time dt = clock.restart(); //??�쟾 ??�뜲??�듃 ??�컙???꾩옱 ??�뜲??�듃 ??�컙 ?�⑥??湲곕�?
                     Event ev;
                     InputManager::ClearInput();
 
@@ -487,18 +505,18 @@ int main()
                     }
                     float deltaTime = dt.asSeconds();
                     window.clear();
-                    if (isGameover)
+                    if ( isGameover )
                     {
                         for (auto i : gameObjectList)
                         {
                             i->Update(deltaTime);
-
                         }
                     }
                     else
                     {
                         deltaTime = 0;
                     }
+                   
                     for (auto i : gameObjectList)
                     {
                         i->Draw(window);
@@ -509,9 +527,10 @@ int main()
                     if (timer < 0.f)
                     {
                         timer = 0.f;
+                        isGameover = false;
                     }
 
-                    float normTime = timer / duration; // ?뺢퇋??
+                    float normTime = timer / duration; // ?�?��??
                     float timerSizeX = timerBarSize.x * normTime;
                     um.GetRectangleUI("timer Bar")->
                         setSize({ timerSizeX, timerBarSize.y });
@@ -528,7 +547,23 @@ int main()
                     window.draw(*(um.GetTextUI("2pScore")));
 
                     window.draw(*um.GetRectangleUI("timer Bar"));
-
+                    if ( !isGameover )
+                    {
+                        if ( player1->GetScore() > player2->GetScore() )
+                        {
+                            window.draw(*(um.GetTextUI("1PWin")));
+                        }
+                        else if ( player1->GetScore() < player2->GetScore() )
+                        {
+                            window.draw(*(um.GetTextUI("2PWin")));
+                        }
+                        else
+                        {
+                            window.draw(*(um.GetTextUI("tie")));
+                        }
+                       
+                    }
+                    
                     window.display();
 
                 }
