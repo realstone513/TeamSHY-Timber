@@ -308,3 +308,8 @@ void Tree::UpdateBranches()
 		}
 	}
 }
+
+Sides Tree::CurrentBranchSide()
+{
+	return branches[currentBranche]->GetSide();
+}

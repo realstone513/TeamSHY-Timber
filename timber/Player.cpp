@@ -77,12 +77,10 @@ void Player::Update(float dt)
 		{
 			if (InputManager::GetKeyDown(Keyboard::Left))
 			{
-				//SetPosition({ 900,1000 });
 				Chop(Sides::Left);
 			}
 			if (InputManager::GetKeyDown(Keyboard::Right))
 			{
-				//SetPosition({ 1100,1000 });
 				Chop(Sides::Right);
 			}
 		}
@@ -97,6 +95,11 @@ void Player::Update(float dt)
 				isChop = false;
 			}
 		}
+	}
+	if (side == currentbranchside)
+	{
+		Die();
+		isChop = false;
 	}
 }
 
@@ -119,3 +122,21 @@ void Player::Chop(Sides side)
 	//IncreaseScore();
 }
 
+void Player::Die()
+{
+	//플레이어 죽음
+	//1. 그림 바꾸기
+	//2. 도끼 x
+	//3. 키 입력 막아야 하고
+	isAlive = false;
+	isChop = false;
+	sprite.setTexture(RMI->GetTexture("graphics/rip.png"), true);
+	SetFlipX(false);
+	Utils::SetOrigin(sprite, Origins::BC);
+	//soundDeath.play();
+}
+
+Sides Player::CurrentBranchSide(Tree* side)
+{
+	return currentbranchside =side->CurrentBranchSide();
+}
