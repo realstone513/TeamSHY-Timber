@@ -22,7 +22,9 @@ int main()
     UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"), window.getSize());
 
     Vector2u size = window.getSize();
-
+    //sound
+    Sound timeOutSound;
+    timeOutSound.setBuffer(RMI->GetSoundBuffer("sound/out_of_time.wav"));
     //Title
     um.SetTextUI("Press Enter to start!", "press enter");
     um.GetTextUI("press enter")->setPosition({ 500, 600 });
@@ -356,7 +358,7 @@ int main()
         if (PlayGame && (gamemode == 1 || gamemode == 2))
         {
             Vector2f timerBarSize(400, 80);
-            float duration = 40.0f;
+            float duration = 4.0f;
             float timer = duration;
             bool isGameover =true;
             um.SetRectangleUI("timer Bar", timerBarSize, Color::Red);
@@ -370,7 +372,7 @@ int main()
                 Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
                 tree->SetPosition({ 960, 900 });
                 gameObjectList.push_back(tree);
-                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
+                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition(), RMI->GetTexture("graphics/axe.png"));
                 gameObjectList.push_back(player1);
 
                 for (auto i : gameObjectList)
@@ -432,6 +434,7 @@ int main()
                     {
                         timer = 0.f;
                         isGameover = false;
+                        timeOutSound.play();
                     }
 
                     float normTime = timer / duration; // ?ëº?‡‹??
@@ -462,9 +465,9 @@ int main()
                 Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 2);
                 tree2->SetPosition({ 1440, 900 });
                 gameObjectList.push_back(tree2);
-                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree1->GetPosition());
+                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree1->GetPosition(), RMI->GetTexture("graphics/axe.png"));
                 gameObjectList.push_back(player1);
-                Player* player2 = new Player(RMI->GetTexture(charcterIndex[twoPcharcter]), gamemode, 2, tree2->GetPosition());
+                Player* player2 = new Player(RMI->GetTexture(charcterIndex[twoPcharcter]), gamemode, 2, tree2->GetPosition(), RMI->GetTexture("graphics/axe.png"));
                 gameObjectList.push_back(player2);
 
                 for (auto i : gameObjectList)
@@ -526,6 +529,7 @@ int main()
                     {
                         timer = 0.f;
                         isGameover = false;
+                        timeOutSound.play();
                     }
 
                     float normTime = timer / duration; // ?ëº?‡‹??

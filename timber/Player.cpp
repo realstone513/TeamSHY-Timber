@@ -2,9 +2,19 @@
 #include "InputManager.h"
 #include "Tree.h"
 
-Player::Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos)
+Player::Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Texture& axe)
     :SpriteGameObject(player), texPlayer(player), GameMode(gamemode), is1P2P(is1P2P), isChop(false), treePos(treepos), originalPos(2), score(0)
 {
+    texAxe.setTexture(axe);
+    Utils::SetOrigin(texAxe, Origins::ML);
+    Vector2f size = GetSize();
+
+    axePos.x = -size.x * 0.5f + 70;
+    axePos.y = -size.y * 0.5f + 30;
+    SetOrigin(Origins::BC);
+
+    score = 0;
+    scoreStatus = true;
 }
 
 Player::~Player()
@@ -36,6 +46,11 @@ void Player::Init()
     SetPosition(originalPos[(int)side]);
     score = 0;
     scoreStatus = true;
+
+    chopSound.setBuffer(RMI->GetSoundBuffer("sound/chop.wav"));
+    deathSound.setBuffer(RMI->GetSoundBuffer("sound/death.wav"));
+    
+
 }
 
 void Player::Release()
@@ -126,11 +141,34 @@ void Player::Update(float dt)
 void Player::Draw(RenderWindow& window)
 {
     SpriteGameObject::Draw(window);
+    if ( isChop )
+    {
+        window.draw(texAxe);
+    }
+
+}
+
+void Player::SetPosition(Vector2f pos)
+{
+    SpriteGameObject::SetPosition(pos);
+    Vector2f axePos2 = axePos;
+    if ( texAxe.getScale().x < 0 )
+    {
+        axePos2.x *= -1;
+    }
+    texAxe.setPosition(pos + axePos);
+
 }
 
 void Player::SetFlipX(bool flip)
 {
     SpriteGameObject::SetFlipX(flip);
+
+    Vector2f scale = texAxe.getScale();
+
+    scale.x = flip ? -abs(scale.x) : abs(scale.x);
+    texAxe.setScale(scale);
+
 }
 
 void Player::Chop(Sides side)
@@ -139,6 +177,7 @@ void Player::Chop(Sides side)
     this->side = side;
     SetFlipX(this->side == Sides::Left);
     SetPosition(originalPos[(int)side]);
+    chopSound.play();
     //IncreaseScore();
 }
 
@@ -148,6 +187,10 @@ void Player::Die()
     //1. 그림 바꾸기
     //2. 도끼 x
     //3. 키 입력 막아야 하고
+    if ( isAlive )
+    {
+        deathSound.play();
+    }
     isAlive = false;
     isChop = true;
     sprite.setTexture(RMI->GetTexture("graphics/rip.png"), true);

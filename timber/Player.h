@@ -9,6 +9,10 @@ class Player : public SpriteGameObject
 {
 private:
 	Texture& texPlayer;
+	Sprite texAxe;
+	Sound chopSound;
+	Sound deathSound;
+
 	int GameMode;
 	int is1P2P;
 	Sides side;
@@ -19,17 +23,20 @@ private:
 
 	int score;
 	bool scoreStatus;
+
 	Vector2f treePos;
 	vector<Vector2f> originalPos;
+	Vector2f axePos;
 
 public:
-	Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos);
+	Player(Texture& player, int gamemode, int is1P2P, Vector2f treepos, Texture& axe);
 	~Player();
 
 	virtual void Init();
 	virtual void Release();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
+	virtual void SetPosition(Vector2f pos);
 	virtual void SetFlipX(bool flip);
 
 	void Chop(Sides side);
