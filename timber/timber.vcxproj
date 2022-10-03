@@ -148,12 +148,20 @@
     <ClCompile Include="Branch.cpp" />
     <ClCompile Include="EffectLog.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="main2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SpriteGameObject.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -169,6 +177,7 @@
     </ClInclude>
     <ClInclude Include="rapidcsv.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteGameObject.h" />
     <ClInclude Include="Tree.h" />

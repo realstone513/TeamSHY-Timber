@@ -16,8 +16,8 @@ using namespace sf;
 
 int main()
 {
-	VideoMode vm(1920, 1080);
-	RenderWindow window(vm, "timber", Style::Default);
+    VideoMode vm(1920, 1080);
+    RenderWindow window(vm, "timber", Style::Default);
     list<SpriteGameObject*> gameObjectList;
     gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
     UIManager um(RMI->GetFont("fonts/KOMIKAP_.ttf"), window.getSize());
@@ -32,7 +32,7 @@ int main()
     //Menu
     um.SetTextUI("Menu");
     um.GetTextUI("Menu")->setPosition({
-        um.GetwSize().x * 0.5f, um.GetwSize().y * 0.5f});
+        um.GetwSize().x * 0.5f, um.GetwSize().y * 0.5f });
     um.GetTextUI("Menu")->setPosition({ size.x * 0.35f, size.y * 0.15f });
     um.GetTextUI("Menu")->setCharacterSize(225);
     um.SetTextUI("1 player", "1p");
@@ -166,7 +166,7 @@ int main()
             {
                 um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.5f });
             }
-            else if( gamemode == 2 )
+            else if ( gamemode == 2 )
             {
                 um.GetTextUI("arrow")->setPosition({ size.x * 0.45f, size.y * 0.75f });
             }
@@ -215,7 +215,7 @@ int main()
                     onePlayready = false;
                     twoPlayready = false;
                 }
-                
+
             }
             if ( gamemode == 1 )
             {
@@ -228,7 +228,7 @@ int main()
                     onePcharcter += 1;
                 }
             }
-            else if(gamemode == 2)
+            else if ( gamemode == 2 )
             {
                 if ( InputManager::GetKeyDown(Keyboard::Key::A) && onePcharcter > 0 )
                 {
@@ -240,22 +240,22 @@ int main()
                 }
                 if ( InputManager::GetKeyDown(Keyboard::Key::Left) && twoPcharcter > 0 )
                 {
-					twoPcharcter -= 1;
+                    twoPcharcter -= 1;
                 }
                 if ( InputManager::GetKeyDown(Keyboard::Key::Right) && twoPcharcter < 2 )
                 {
-					twoPcharcter += 1;   
+                    twoPcharcter += 1;
                 }
             }
-            
+
             if ( InputManager::GetKeyDown(Keyboard::Return) )
             {
                 ready += 1;
                 onePlayready = true;
-                
-                
+
+
             }
-            if ( InputManager::GetKeyDown(Keyboard::Space) && gamemode == 2 ) 
+            if ( InputManager::GetKeyDown(Keyboard::Space) && gamemode == 2 )
             {
                 ready += 1;
                 twoPlayready = true;
@@ -278,17 +278,17 @@ int main()
 
                 go->Update(deltaTime);
             }
-            
+
             //Draw
             window.clear();
             for ( auto go : gameObjectList )
             {
                 go->Draw(window);
             }
-			for ( auto go : charcterList )
-			{
-				go->Draw(window);
-			}
+            for ( auto go : charcterList )
+            {
+                go->Draw(window);
+            }
 
             if ( gamemode == 1 )
             {
@@ -338,9 +338,9 @@ int main()
             }
             window.display();
         }
-       
+
         //Game Scene
-        if( PlayGame && (gamemode == 1 || gamemode == 2))
+        if ( PlayGame && (gamemode == 1 || gamemode == 2) )
         {
             Vector2f timerBarSize(400, 80);
             float duration = 4.0f;
@@ -351,31 +351,31 @@ int main()
                 um.GetwSize().y - 100);
             string charcterIndex[3] = { "graphics/player_green.png","graphics/player_red.png","graphics/player_yellow.png" };
             if ( gamemode == 1 )
-			{
-				Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
-				tree->SetPosition({ 960, 900 });
-				gameObjectList.push_back(tree);
-				Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
-				gameObjectList.push_back(player1);
-			}
-			else
-			{
-				Tree* tree1 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 1);
-				tree1->SetPosition({ 480, 900 });
-				gameObjectList.push_back(tree1);
-				Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 2);
-				tree2->SetPosition({ 1440, 900 });
-				gameObjectList.push_back(tree2);
-				Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree1->GetPosition());
-				gameObjectList.push_back(player1);
-				Player* player2 = new Player(RMI->GetTexture(charcterIndex[twoPcharcter]), gamemode, 2, tree2->GetPosition());
-				gameObjectList.push_back(player2);
-			}
+            {
+                Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
+                tree->SetPosition({ 960, 900 });
+                gameObjectList.push_back(tree);
+                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
+                gameObjectList.push_back(player1);
+            }
+            else
+            {
+                Tree* tree1 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 1);
+                tree1->SetPosition({ 480, 900 });
+                gameObjectList.push_back(tree1);
+                Tree* tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gamemode, 2);
+                tree2->SetPosition({ 1440, 900 });
+                gameObjectList.push_back(tree2);
+                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree1->GetPosition());
+                gameObjectList.push_back(player1);
+                Player* player2 = new Player(RMI->GetTexture(charcterIndex[twoPcharcter]), gamemode, 2, tree2->GetPosition());
+                gameObjectList.push_back(player2);
+            }
             for ( auto i : gameObjectList )
-			{
-				i->Init();
-			}
-            while (PlayGame)
+            {
+                i->Init();
+            }
+            while ( PlayGame )
             {
                 Time dt = clock.restart(); //?´ì „ ?…ë°?´íŠ¸ ?œê°„ê³??„ìž¬ ?…ë°?´íŠ¸ ?œê°„ ì°¨ì´ ê¸°ë¡
                 Event ev;
@@ -385,7 +385,7 @@ int main()
                 {
                     InputManager::UpdateInput(ev);
                 }
-                
+
                 if ( InputManager::GetKeyDown(Keyboard::Key::Escape) )
                 {
                     ready = 0;
@@ -399,7 +399,7 @@ int main()
                 }
 
                 float deltaTime = dt.asSeconds();
-                
+
                 for ( auto i : gameObjectList )
                 {
                     i->Update(deltaTime);
@@ -413,7 +413,7 @@ int main()
 
                 // UI update
                 timer -= deltaTime;
-                if (timer < 0.f)
+                if ( timer < 0.f )
                 {
                     timer = 0.f;
                 }
@@ -433,18 +433,18 @@ int main()
 
                 float normTime = timer / duration; // ?•ê·œ??
                 float timerSizeX = timerBarSize.x * normTime;
-                um.GetRectangleUI("timer Bar")->setSize({timerSizeX, timerBarSize.y});
+                um.GetRectangleUI("timer Bar")->setSize({ timerSizeX, timerBarSize.y });
                 um.GetRectangleUI("timer Bar")->setPosition(
                     um.GetwSize().x * 0.5f - timerSizeX * 0.5f,
                     um.GetwSize().y - 100);
 
-                
+
                 window.draw(*um.GetRectangleUI("timer Bar"));
                 window.display();
             }
-           
+
         }
-       
+
         //Game over
         while ( GameOver )
         {
@@ -486,7 +486,7 @@ int main()
 
             window.display();
         }
-        
+
         for ( auto go : gameObjectList )
         {
             go->Release();
@@ -494,8 +494,8 @@ int main()
         }
         gameObjectList.clear();
 
-       
+
     }
-    
+
     return 0;
 }
