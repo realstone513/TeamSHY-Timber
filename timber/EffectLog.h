@@ -3,6 +3,7 @@
 class EffectLog : public SpriteGameObject
 {
 protected:
+	Sides side;
 	Vector2f velocity;
 	float angularvelocity;
 	float duration;
@@ -12,7 +13,7 @@ protected:
 public:
 	static const Vector2f Gravity;
 
-	EffectLog(Texture& tex, float duration);
+	EffectLog(Texture& tex, float duration, Sides side);
 	virtual ~EffectLog();
 
 	void Fire(const Vector2f v, float av);
@@ -22,5 +23,6 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 
 	bool GetActive();
+	Sides GetSide();
 };
 

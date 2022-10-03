@@ -1,21 +1,71 @@
 #include "Tree.h"
 #include "Player.h"
 #include "InputManager.h"
+#include "EffectLog.h"
 
 Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 	:SpriteGameObject(texTree), texTree(texTree), side(Sides::Right), GameMode(gamemode), is1P2P(is1P2P), isChop(false), currentBranche(-1)
 {
-	for (int i = 0; i < 100; ++i)
+	unuseLogs.resize(3);
+
+	if (this->GameMode == 1)
 	{
-		if (this->GameMode == 1)
+		for (int i = 0; i < 3; i++)
 		{
-			auto log = new EffectLog(RMI->GetTexture("graphics/log.png"), 5.f);
-			unuseLogs.push_back(log);
+			for (int j = 0; j < 30; ++j)
+			{
+				switch (i)
+				{
+				case 0:
+				{
+					auto log = new EffectLog(RMI->GetTexture("graphics/1P_log(b)_L.png"), 5.f,(Sides)i);
+					unuseLogs[i].push_back(log);
+					break;
+				}
+				case 1:
+				{
+					auto log = new EffectLog(RMI->GetTexture("graphics/1P_log(b)_R.png"), 5.f, (Sides)i);
+					unuseLogs[i].push_back(log);
+					break;
+				}
+				case 2:
+				{
+					auto log = new EffectLog(RMI->GetTexture("graphics/1P_log(b)_N.png"), 5.f, (Sides)i);
+					unuseLogs[i].push_back(log);
+					break;
+				}
+				}
+			}
 		}
-		else
+	}
+	else
+	{
+		for (int i = 0; i < 3; i++)
 		{
-			auto log = new EffectLog(RMI->GetTexture("graphics/2Plog.png"), 5.f);
-			unuseLogs.push_back(log);
+			for (int j = 0; j <50; ++j)
+			{
+				switch (i)
+				{
+				case 0:
+				{
+					auto log = new EffectLog(RMI->GetTexture("graphics/2P_log(b)_L.png"), 5.f, (Sides)i);
+					unuseLogs[i].push_back(log);
+					break;
+				}
+				case 1:
+				{
+					auto log = new EffectLog(RMI->GetTexture("graphics/2P_log(b)_R.png"), 5.f, (Sides)i);
+					unuseLogs[i].push_back(log);
+					break;
+				}
+				case 2:
+				{
+					auto log = new EffectLog(RMI->GetTexture("graphics/2P_log(b)_N.png"), 5.f, (Sides)i);
+					unuseLogs[i].push_back(log);
+					break;
+				}
+				}
+			}
 		}
 	}
 
@@ -44,13 +94,14 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 				break;
 			}
 		}
+		branches[i]->SetOrigin(Origins::BC);
 	}
 
 	branchPosArr.resize(branches.size());
-	float x = branches[0]->GetPosition().x;
-	float y = 800;
+	float x = 960;
+	float y = 750;
 	float offset = branches[0]->GetSize().y;
-	offset += 100;
+	//	offset +=30;
 	for (int i = 0; i < branches.size(); ++i)
 	{
 		branchPosArr[i] = Vector2f(x, y);
@@ -68,13 +119,19 @@ void Tree::Init()
 {
 	sprite.setTexture(texTree,true);
 	SetOrigin(Origins::BC);
+
 }
 
 void Tree::Release()
 {
-	for (auto log : unuseLogs)
+	
+	for (auto it=unuseLogs.begin();it<unuseLogs.end();it++)
 	{
-		delete log;
+		for (auto log : *it)
+		{
+			delete log;
+		}
+		it->clear();
 	}
 	unuseLogs.clear();
 
@@ -96,7 +153,8 @@ void Tree::Update(float dt)
 		(*it)->Update(dt);
 		if (!(*it)->GetActive())
 		{
-			unuseLogs.push_back(*it);
+			
+			unuseLogs[(int)(*it)->GetSide()].push_back(*it);
 			it = useLogs.erase(it);
 		}
 		else
@@ -214,8 +272,8 @@ void Tree::ShowLogEffect(Sides side)
 	if (unuseLogs.empty())
 		return;
 
-	auto log = unuseLogs.front();
-	unuseLogs.pop_front();
+	auto log = unuseLogs[(int)side].front();
+	unuseLogs[(int)side].pop_front();
 	useLogs.push_back(log);
 
 	Vector2f force;
@@ -234,6 +292,7 @@ void Tree::ShowLogEffect(Sides side)
 	log->SetPosition(pos);
 	log->SetOrigin(Origins::MC);
 	log->Fire(force, aForce);
+	UpdateBranches();
 }
 
 void Tree::UpdateBranches()

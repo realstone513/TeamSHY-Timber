@@ -2,8 +2,8 @@
 
 const Vector2f EffectLog::Gravity = Vector2f(0.f, 1000.f);
 
-EffectLog::EffectLog(Texture& tex, float duration)
-	:SpriteGameObject(tex), duration(duration)
+EffectLog::EffectLog(Texture& tex, float duration,Sides side)
+	:SpriteGameObject(tex), duration(duration),side(side)
 {
 	SetOrigin(Origins::MC);
 }
@@ -59,4 +59,9 @@ void EffectLog::Draw(RenderWindow& window)
 bool EffectLog::GetActive()
 {
 	return active;
+}
+
+Sides EffectLog::GetSide()
+{
+	return side;
 }
