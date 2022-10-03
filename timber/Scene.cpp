@@ -90,6 +90,29 @@ void Title::Init()
     Scene::Init();
 
     gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    
+    vector<float> startVector = { 2000, -300 };
+    vector<float> endVector = { -300, 2000 };
+    for (int i = 0; i < 3; ++i)
+    {
+        auto cloud = new FloatingObject(RMI->GetTexture("graphics/cloud.png"));
+        auto index = rand() % 2;
+
+        cloud->Set({ 100, 200 }, { 100, 200 },
+            { startVector[index], 0 }, { endVector[index], 0 });
+        gameObjectList.push_back(cloud);
+    }
+    auto Bee = new FloatingObject(RMI->GetTexture("graphics/bee.png"));
+    auto Beeindex = rand() % 2;
+
+    Bee->Set({ 300, 500 }, { 600, 800 },
+        { startVector[Beeindex], 0 }, { endVector[Beeindex], 0 });
+    gameObjectList.push_back(Bee);
+
+    for (auto i : gameObjectList)
+    {
+        i->Init();
+    }
 }
 
 void Title::Update()
@@ -124,8 +147,9 @@ void Title::Draw()
     {
         go->Draw(*window);
     }
-    window->draw(*um->GetTextUI("title"));
+    window->draw(*um->GetTextUI("team name"));
     window->draw(*um->GetTextUI("press enter"));
+    window->draw(*um->GetTextUI("title"));
     window->display();
 }
 
@@ -430,7 +454,12 @@ int SelectCharacter::GetCharacter2p()
 GamePlay::GamePlay(int _mode, int player1, int player2)
     : gameMode(_mode), character1p(player1), character2p(player2), gameOver(false), pause(false)
 {
+    // 타이머 바 크기 조절에 필요한 값
+    timerBarSize = { 400, 80 };
+    // 난이도에 필요한 두 값
     duration = gameMode == 1 ? 5.f : 30.f;
+    bonusTime = 0.25f;
+
     timer = duration;
     Init();
 }
@@ -486,7 +515,7 @@ void GamePlay::Init()
     auto Bee = new FloatingObject(RMI->GetTexture("graphics/bee.png"));
     auto Beeindex = rand() % 2;
 
-    Bee->Set({ 300,500 }, { 600, 800 },
+    Bee->Set({ 300, 500 }, { 600, 800 },
         { startVector[Beeindex], 0 }, { endVector[Beeindex], 0 });
     gameObjectList.push_back(Bee);
 
@@ -500,15 +529,6 @@ void GamePlay::Update()
 {
     Scene::Update();
 
-    float deltaTime = pause ? 0 : dt.asSeconds();
-    if (!gameOver)
-    {
-        for (auto i : gameObjectList)
-        {
-            i->Update(deltaTime);
-        }
-    }
-
     if (InputManager::GetKeyDown(Keyboard::Key::Escape))
     {
         playing = false;
@@ -516,40 +536,55 @@ void GamePlay::Update()
         return;
     }
 
-    if (InputManager::GetKeyDown(Keyboard::Key::Return))
+    float deltaTime = pause || gameOver ? 0 : dt.asSeconds();
+    if (!gameOver)
     {
-        pause = true;
+        if (!pause)
+        {
+            for (auto i : gameObjectList)
+            {
+                i->Update(deltaTime);
+            }
+        }
+        if (InputManager::GetKeyDown(Keyboard::Key::Return))
+        {
+            pause = !pause;
+        }
     }
-
-    if (gameMode == 1 && (player1->GetPlayerSide() == tree1->GetCurrentBranchSide()) )
-	{
-		player1->Die();
-		gameOver = true;
-	}
 
     timer -= deltaTime;
     // Game Over
     if (timer < 0.f)
     {
         timer = 0.f;
+        gameOver = true;
+    }
+    if (gameOver || pause)
+        return;
+
+    if (gameMode == 1)
+    {
+        if (InputManager::GetKeyDown(Keyboard::Key::A) ||
+            InputManager::GetKeyDown(Keyboard::Key::D))
+            timer += bonusTime;
+        if ((player1->GetPlayerSide() == tree1->GetCurrentBranchSide()))
+        {
+            player1->Die();
+            gameOver = true;
+        }
     }
 
     float normTime = timer / duration; // normalize
-    Vector2f timerBarSize = um->GetRectangleUI("timer Bar")->getSize();
     float timerSizeX = timerBarSize.x * normTime;
     um->GetRectangleUI("timer Bar")->
         setSize({ timerSizeX, timerBarSize.y });
     um->GetRectangleUI("timer Bar")->setPosition(
         um->GetwSize().x * 0.5f - timerSizeX * 0.5f,
         um->GetwSize().y - 100);
-    //string p1score = );
-    um->GetTextUI("1pScore")->setString("Score: " + to_string(player1->GetScore()));
 
+    um->GetTextUI("1pScore")->setString("Score: " + to_string(player1->GetScore()));
     if (gameMode == 2)
-    {
-        //string p2score = );
         um->GetTextUI("2pScore")->setString("Score: " + to_string(player2->GetScore()));
-    }
 }
 
 void GamePlay::Draw()
@@ -560,6 +595,10 @@ void GamePlay::Draw()
     {
         go->Draw(*window);
     }
+    if (pause)
+    {
+        window->draw(*(um->GetTextUI("press enter")));
+    }
     if (gameOver)
         window->draw(*(um->GetTextUI("end")));
 
@@ -567,6 +606,10 @@ void GamePlay::Draw()
     if (gameMode == 2)
         window->draw(*(um->GetTextUI("2pScore")));
     window->draw(*(um->GetRectangleUI("timer Bar")));
+
+    string timerText = to_string(timer).substr(0, 4);
+    um->GetTextUI("timer Text")->setString(timerText);
+    window->draw(*(um->GetTextUI("timer Text")));
     window->display();
 }
 

@@ -310,16 +310,14 @@ void Tree::Update(float dt)
 
 void Tree::Draw(RenderWindow& window)
 {
+	for (auto branch : branches)
+	{
+		branch->Draw(window);
+	}
 	SpriteGameObject::Draw(window);
 	for (auto log : useLogs)
 	{
 		log->Draw(window);
-		
-	}
-	for (auto branch : branches)
-	{
-		branch->Draw(window);
-
 	}
 }
 

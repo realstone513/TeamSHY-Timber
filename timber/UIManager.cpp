@@ -12,12 +12,15 @@ UIManager::~UIManager()
 void UIManager::Init()
 {
 	//Title
-	SetTextUI("T i m b e r !", "title", 250, Color::Yellow);
+	SetTextUI("T i m b e r !", "title", 250, Color::Green);
 	GetTextUI("title")->setPosition({
-		wSize.x * 0.1f, wSize.y * 0.2f });
-	SetTextUI("Press Enter to start!", "press enter");
+		wSize.x * 0.1f, wSize.y * 0.15f });
+	SetTextUI("Press Enter to start!", "press enter", 75, Color::Yellow);
 	GetTextUI("press enter")->setPosition({
-		wSize.x * 0.25f, wSize.y * 0.6f });
+		wSize.x * 0.25f, wSize.y * 0.45f });
+	SetTextUI("Team SHY", "team name", 150, Color::Black);
+	GetTextUI("team name")->setPosition({
+		wSize.x * 0.32f, wSize.y * 0.65f });
 
 	//Menu
 	SetTextUI("Game Mode", "Game Mode", 225, Color::Green);
@@ -44,6 +47,8 @@ void UIManager::Init()
 	GetRectangleUI("timer Bar")->setPosition(
 		wSize.x * 0.5f - timerBarSize.x * 0.5f,
 		wSize.y - 100);
+	SetTextUI("timer Text");
+	GetTextUI("timer Text")->setPosition(wSize.x * 0.45f, wSize.y - 100);
 	SetTextUI("0", "1pScore", 100, Color::Magenta);
 	GetTextUI("1pScore")->setPosition({ 0, 0 });
 	SetTextUI("0", "2pScore", 100, Color::Cyan);

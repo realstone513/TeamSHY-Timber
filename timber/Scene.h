@@ -100,6 +100,8 @@ private:
 	bool pause;
 	float duration;
 	float timer;
+	float bonusTime;
+	Vector2f timerBarSize;
 
 	Player* player1;
 	Player* player2;
