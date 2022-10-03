@@ -2,7 +2,7 @@
 #include "ResourceManager.h"
 
 Scene::Scene()
-	: playing(true)
+    : playing(true), exit(false)
 {
 }
 
@@ -33,6 +33,14 @@ void Scene::Update()
     {
         InputManager::UpdateInput(ev);
     }
+
+    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    {
+        playing = false;
+        window->close();
+        exit = true;
+        return;
+    }
 }
 
 void Scene::Draw()
@@ -58,6 +66,16 @@ void Scene::GetWindow(RenderWindow* _window)
 void Scene::GetUIManager(UIManager* _um)
 {
     um = _um;
+}
+
+bool Scene::Loop()
+{
+    while (playing)
+    {
+        Update();
+        Draw();
+    }
+    return exit;
 }
 
 
@@ -88,11 +106,6 @@ void Title::Update()
         playing = false;
         return;
     }
-    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
-    {
-        window->close();
-        return;
-    }
 
     for (auto go : gameObjectList)
     {
@@ -118,30 +131,30 @@ void Title::Release()
     Scene::Release();
 }
 
-// Menu
-Menu::Menu(int& _gameMode)
+// SelectGameMode
+SelectGameMode::SelectGameMode()
+    : gameMode(1)
 {
     Init();
 }
 
-Menu::~Menu()
+SelectGameMode::~SelectGameMode()
 {
 }
 
-void Menu::Init()
+void SelectGameMode::Init()
 {
     Scene::Init();
 
     gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
 }
 
-void Menu::Update()
+void SelectGameMode::Update()
 {
     Scene::Update();
-
-    if (InputManager::GetKeyDown(Keyboard::Key::Escape))
+    
+    if (InputManager::GetKeyDown(Keyboard::Key::Return))
     {
-        gameMode = 0;
         playing = false;
         return;
     }
@@ -173,7 +186,7 @@ void Menu::Update()
     }
 }
 
-void Menu::Draw()
+void SelectGameMode::Draw()
 {
     Scene::Draw();
     
@@ -188,7 +201,116 @@ void Menu::Draw()
     window->display();
 }
 
-void Menu::Release()
+void SelectGameMode::Release()
 {
     Scene::Release();
+}
+
+int SelectGameMode::GetGameMode()
+{
+    return gameMode;
+}
+
+// SelectCharacter
+SelectCharacter::SelectCharacter(int gameMode)
+    : gameMode(gameMode), character1p(0), character2p(0), ready(0)
+{
+    Init();
+}
+
+SelectCharacter::~SelectCharacter()
+{
+}
+
+void SelectCharacter::Init()
+{
+    Scene::Init();
+
+    gameObjectList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/background.png")));
+    
+    list<SpriteGameObject*> charcterList;
+    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_red.png"), Vector2f(200, 400)));
+    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(800, 400)));
+    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_yellow.png"), Vector2f(1400, 400)));   
+    for (auto c : charcterList)
+    {
+        c->setScale(2, 2);
+        gameObjectList.push_back(c);
+    }
+}
+
+void SelectCharacter::Update()
+{
+    Scene::Update();
+
+    if (gameMode == 1)
+    {
+        if (InputManager::GetKeyDown(Keyboard::Key::A))
+		{
+			character1p -= 1;
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::D))
+		{
+            character1p += 1;
+		}
+        if (InputManager::GetKeyDown(Keyboard::Return))
+		{
+            ready++;
+            playing = false;
+            return;
+		}
+    }
+
+    if (ready)
+    {
+        playing = false;
+        return;
+    }
+}
+
+void SelectCharacter::Draw()
+{
+    Scene::Draw();
+
+    for (auto go : gameObjectList)
+    {
+        go->Draw(*window);
+    }
+
+    if (gameMode == 1)
+	{
+		if (character1p == 0)
+		{
+			um->GetTextUI("1pArrow")->setPosition(
+                { um->GetwSize().x * 0.25f, um->GetwSize().y * 0.75f });
+		}
+		else if (character1p == 1)
+		{
+			um->GetTextUI("1pArrow")->setPosition(
+                { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
+		}
+		else if (character1p == 2)
+		{
+			um->GetTextUI("1pArrow")->setPosition(
+                { um->GetwSize().x * 0.75f,um->GetwSize().y * 0.75f });
+		}
+		window->draw(*um->GetTextUI("1pArrow"));
+	}
+
+    window->display();
+}
+
+void SelectCharacter::Release()
+{
+    Scene::Release();
+}
+
+int SelectCharacter::GetCharacter1p()
+{
+    return character1p;
+}
+
+int SelectCharacter::GetCharacter2p()
+{
+    return character2p;
 }

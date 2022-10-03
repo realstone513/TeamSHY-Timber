@@ -22,6 +22,9 @@ protected:
 	Clock					clock;
 	Time					dt;
 
+	bool playing;
+	bool exit;
+
 public:
 	Scene();
 	virtual ~Scene();
@@ -33,7 +36,7 @@ public:
 	virtual void GetWindow(RenderWindow* _window);
 	virtual void GetUIManager(UIManager* _um);
 	
-	bool playing;
+	bool Loop();
 };
 
 class Title : public Scene
@@ -48,17 +51,38 @@ public:
 	virtual void Release() override;
 };
 
-class Menu : public Scene
+class SelectGameMode : public Scene
 {
 private:
-	int		gameMode;
+	int gameMode;
 
 public:
-	Menu(int& _gameMode);
-	virtual ~Menu() override;
+	SelectGameMode();
+	virtual ~SelectGameMode() override;
 
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual void Release() override;
+	int GetGameMode();
+};
+
+class SelectCharacter : public Scene
+{
+private:
+	int gameMode;
+	int	character1p;
+	int	character2p;
+	int ready;
+
+public:
+	SelectCharacter(int gameMode);
+	virtual ~SelectCharacter() override;
+
+	virtual void Init() override;
+	virtual void Update() override;
+	virtual void Draw() override;
+	virtual void Release() override;
+	int GetCharacter1p();
+	int GetCharacter2p();
 };

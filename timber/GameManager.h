@@ -16,6 +16,10 @@ public:
 	RenderWindow*	window;
 	UIManager*		um;
 	int				gameMode;
+	int				character1p;
+	int				character2p;
+	bool			selectGameMode;
+	bool			selectCharacter;
 
 	GameManager();
 	~GameManager();
@@ -28,5 +32,4 @@ public:
 private:
 	Scene*			currentScene;
 	Vector2u		wSize;
-
 };

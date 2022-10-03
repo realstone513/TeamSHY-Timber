@@ -2,46 +2,46 @@
 #include "Player.h"
 #include "Tree.h"
 
+#include <iostream>
+
 int main()
 {
     GameManager gm;
 
     while (gm.GetWindow()->isOpen())
     {
-        /*bool b_Title = true;
-        bool SelectMenu = false;
-        bool SelectCharacter = false;
-        bool PlayGame = false;
-        bool GameOver = false;
-
-        int gamemode = 1;
-        int onePcharcter = 0;
-        int twoPcharcter = 0;
-        bool onePlayready = false;
-        bool twoPlayready = false;
-        int ready = 0;*/
-
         gm.PlayScene(new Title());
-        while (gm.GetScene()->playing)
-        {
-            gm.GetScene()->Update();
-            gm.GetScene()->Draw();
-        }
+        if (gm.GetScene()->Loop())
+            return 0;
         gm.ReleaseScene();
 
-        gm.PlayScene(new Menu(gm.gameMode));
-        while (gm.GetScene()->playing)
-        {
-            gm.GetScene()->Update();
-            gm.GetScene()->Draw();
-        }
+        SelectGameMode* sgm = new SelectGameMode();
+        gm.PlayScene(sgm);
+        if (gm.GetScene()->Loop())
+            return 0;
+        gm.gameMode = sgm->GetGameMode();
         gm.ReleaseScene();
 
+        SelectCharacter* sc = new SelectCharacter(gm.gameMode);
+        gm.PlayScene(sc);
+        if (gm.GetScene()->Loop())
+            return 0;
+        gm.character1p = sc->GetCharacter1p();
+        cout << gm.character1p << endl;
+        gm.character2p = sc->GetCharacter2p();
+        gm.ReleaseScene();
+
+
+
+
+        //gm.GetWindow()->close();
     }
-
-        ////Character select
-        //while (SelectCharacter)
+    return 0;
+}
+        //Character select
+        //while (SelectCharacter1)
         //{
+         
         //    //charcter Menu
         //    list<SpriteGameObject*> charcterList;
         //    charcterList.push_back(new SpriteGameObject(RMI->GetTexture("graphics/player_green.png"), Vector2f(200, 400)));
@@ -136,7 +136,6 @@ int main()
         //    //Update
         //    for (auto go : gameObjectList)
         //    {
-
         //        go->Update(deltaTime);
         //    }
 
@@ -167,6 +166,7 @@ int main()
         //        }
         //        window.draw(*(um.GetTextUI("1pArrow")));
         //    }
+        
         //    else if (gamemode == 2)
         //    {
         //        if (onePcharcter == 0)
@@ -199,6 +199,14 @@ int main()
         //    }
         //    window.display();
         //}
+
+
+
+
+
+
+
+
 
         ////Game Scene
         //if (PlayGame && (gamemode == 1 || gamemode == 2))
@@ -354,6 +362,3 @@ int main()
         }
         gameObjectList.clear();*/
     //}
-
-    return 0;
-}

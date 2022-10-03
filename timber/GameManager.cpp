@@ -3,7 +3,8 @@
 #include "InputManager.h"
 
 GameManager::GameManager()
-    : gameMode(0)
+    : gameMode(0), character1p(0), character2p(0),
+    selectGameMode(false), selectCharacter(false)
 {
     VideoMode vm(1920, 1080);
     window = new RenderWindow(vm, "timber", Style::Default);
