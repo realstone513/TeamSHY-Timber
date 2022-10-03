@@ -330,7 +330,7 @@ void SelectCharacter::Draw()
 		if (character1p == 0)
 		{
 			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.25f, um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f });
 		}
 		else if (character1p == 1)
 		{
@@ -340,7 +340,7 @@ void SelectCharacter::Draw()
 		else if (character1p == 2)
 		{
 			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.75f, um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f });
 		}
 		window->draw(*um->GetTextUI("1pArrow"));
 	}
@@ -349,38 +349,54 @@ void SelectCharacter::Draw()
 		if (character1p == 0)
 		{
 			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.25f, um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f });
+            um->GetTextUI("1pReady")->setPosition(
+                { um->GetwSize().x * 0.1f, um->GetwSize().y * 0.50f });
 		}
 		else if (character1p == 1)
 		{
 			um->GetTextUI("1pArrow")->setPosition(
                 { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
+            um->GetTextUI("1pReady")->setPosition(
+                { um->GetwSize().x * 0.4f, um->GetwSize().y * 0.50f });
 		}
 		else if (character1p == 2)
 		{
 			um->GetTextUI("1pArrow")->setPosition(
-                { um->GetwSize().x * 0.75f, um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f });
+            um->GetTextUI("1pReady")->setPosition(
+                { um->GetwSize().x * 0.7f, um->GetwSize().y * 0.50f });
 		}
 
 		if (character2p == 0)
 		{
 			um->GetTextUI("2pArrow")->setPosition(
-                { um->GetwSize().x * 0.25f, um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.2f, um->GetwSize().y * 0.75f });
+            um->GetTextUI("2pReady")->setPosition(
+                { um->GetwSize().x * 0.1f, um->GetwSize().y * 0.50f });
 		}
 		else if (character2p == 1)
 		{
 			um->GetTextUI("2pArrow")->setPosition(
                 { um->GetwSize().x * 0.5f, um->GetwSize().y * 0.75f });
+            um->GetTextUI("2pReady")->setPosition(
+                { um->GetwSize().x * 0.4f, um->GetwSize().y * 0.50f });
 		}
 		else if (character2p == 2)
 		{
 			um->GetTextUI("2pArrow")->setPosition(
-                { um->GetwSize().x * 0.75f, um->GetwSize().y * 0.75f });
+                { um->GetwSize().x * 0.8f, um->GetwSize().y * 0.75f });
+            um->GetTextUI("2pReady")->setPosition(
+                { um->GetwSize().x * 0.7f, um->GetwSize().y * 0.50f });
 		}
 		window->draw(*um->GetTextUI("1pArrow"));
 		window->draw(*um->GetTextUI("2pArrow"));
     }
     window->draw(*um->GetTextUI("Select"));
+    if (ready1p)
+        window->draw(*um->GetTextUI("1pReady"));
+    if (ready2p)
+        window->draw(*um->GetTextUI("2pReady"));
     window->display();
 }
 

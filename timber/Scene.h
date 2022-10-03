@@ -87,3 +87,15 @@ public:
 	int GetCharacter1p();
 	int GetCharacter2p();
 };
+
+class GamePlay : public Scene
+{
+public:
+	GamePlay();
+	virtual ~GamePlay() override;
+
+	virtual void Init() override;
+	virtual void Update() override;
+	virtual void Draw() override;
+	virtual void Release() override;
+};
