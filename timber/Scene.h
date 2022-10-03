@@ -101,6 +101,7 @@ private:
 	float duration;
 	float timer;
 	float bonusTime;
+	Sound timeOutSound;
 	Vector2f timerBarSize;
 
 	Player* player1;

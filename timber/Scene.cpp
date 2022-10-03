@@ -461,6 +461,9 @@ GamePlay::GamePlay(int _mode, int player1, int player2)
     bonusTime = 0.25f;
 
     timer = duration;
+
+    timeOutSound.setBuffer(RMI->GetSoundBuffer("sound/out_of_time.wav"));
+    timeOutSound.setVolume(50);
     Init();
 }
 
@@ -495,7 +498,7 @@ void GamePlay::Init()
         tree1 = new Tree(RMI->GetTexture("graphics/tree.png"), gameMode, 1);
         tree1->SetPosition({ 960, 900 });
         gameObjectList.push_back(tree1);
-        player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition());
+        player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition(), RMI->GetTexture("graphics/axe.png"));
         gameObjectList.push_back(player1);
     }
     else // 2P
@@ -506,9 +509,9 @@ void GamePlay::Init()
 		tree2 = new Tree(RMI->GetTexture("graphics/2Ptree.png"), gameMode, 2);
 		tree2->SetPosition({ 1440, 900 });
 		gameObjectList.push_back(tree2);
-		player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition());
+		player1 = new Player(RMI->GetTexture(charcterIndex[character1p]), gameMode, 1, tree1->GetPosition(), RMI->GetTexture("graphics/axe.png"));
 		gameObjectList.push_back(player1);
-		player2 = new Player(RMI->GetTexture(charcterIndex[character2p]), gameMode, 2, tree2->GetPosition());
+		player2 = new Player(RMI->GetTexture(charcterIndex[character2p]), gameMode, 2, tree2->GetPosition(), RMI->GetTexture("graphics/axe.png"));
 		gameObjectList.push_back(player2);
     }
 
@@ -558,6 +561,7 @@ void GamePlay::Update()
     {
         timer = 0.f;
         gameOver = true;
+        timeOutSound.play();
     }
     if (gameOver || pause)
         return;

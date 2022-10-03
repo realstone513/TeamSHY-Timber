@@ -49,8 +49,6 @@ void Player::Init()
 
     chopSound.setBuffer(RMI->GetSoundBuffer("sound/chop.wav"));
     deathSound.setBuffer(RMI->GetSoundBuffer("sound/death.wav"));
-    
-
 }
 
 void Player::Release()
@@ -66,7 +64,6 @@ void Player::Update(float dt)
         {
             if (InputManager::GetKeyDown(Keyboard::A))
             {
-                //SetPosition({ 300,1000 });
                 Chop(Sides::Left);
                 if ( !scoreStatus )
                 {
@@ -77,7 +74,6 @@ void Player::Update(float dt)
             }
             if (InputManager::GetKeyDown(Keyboard::D))
             {
-                //SetPosition({ 500,1000 });
                 Chop(Sides::Right);
                 if ( !scoreStatus )
                 {
@@ -145,7 +141,6 @@ void Player::Draw(RenderWindow& window)
     {
         window.draw(texAxe);
     }
-
 }
 
 void Player::SetPosition(Vector2f pos)
@@ -157,7 +152,6 @@ void Player::SetPosition(Vector2f pos)
         axePos2.x *= -1;
     }
     texAxe.setPosition(pos + axePos);
-
 }
 
 void Player::SetFlipX(bool flip)
@@ -168,7 +162,6 @@ void Player::SetFlipX(bool flip)
 
     scale.x = flip ? -abs(scale.x) : abs(scale.x);
     texAxe.setScale(scale);
-
 }
 
 void Player::Chop(Sides side)
@@ -178,16 +171,11 @@ void Player::Chop(Sides side)
     SetFlipX(this->side == Sides::Left);
     SetPosition(originalPos[(int)side]);
     chopSound.play();
-    //IncreaseScore();
 }
 
 void Player::Die()
 {
-    //플레이어 죽음
-    //1. 그림 바꾸기
-    //2. 도끼 x
-    //3. 키 입력 막아야 하고
-    if ( isAlive )
+    if ( !isAlive )
     {
         deathSound.play();
     }
@@ -196,7 +184,6 @@ void Player::Die()
     sprite.setTexture(RMI->GetTexture("graphics/rip.png"), true);
     SetFlipX(false);
     Utils::SetOrigin(sprite, Origins::BC);
-    //soundDeath.play();
 }
 
 Sides Player::GetPlayerSide()
