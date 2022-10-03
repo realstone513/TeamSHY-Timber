@@ -37,7 +37,7 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 	virtual void SetFlipX(bool flip);
 
-	void ShowLogEffect(Sides side);
+	void ShowLogEffect(Sides branchside, Sides playerside);
 	void UpdateBranches();
 	Sides GetCurrentBranchSide();
 };

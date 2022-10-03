@@ -344,14 +344,13 @@ int main()
                 um.GetwSize().x * 0.5f - timerBarSize.x * 0.5f,
                 um.GetwSize().y - 100);
             string charcterIndex[3] = { "graphics/player_green.png","graphics/player_red.png","graphics/player_yellow.png" };
-            Tree* tree;
-            Player* player1;
+           
             if ( gamemode == 1 )
 			{
-				tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
+                Tree* tree = new Tree(RMI->GetTexture("graphics/tree.png"), gamemode, 1);
 				tree->SetPosition({ 960, 900 });
 				gameObjectList.push_back(tree);
-				player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
+                Player* player1 = new Player(RMI->GetTexture(charcterIndex[onePcharcter]), gamemode, 1, tree->GetPosition());
 				gameObjectList.push_back(player1);
 			}
 			else
@@ -393,10 +392,10 @@ int main()
                     window.clear();
                     break;
                 }
-                if (player1->GetPlayerSide() == tree->GetCurrentBranchSide())
+               /* if (player1->GetPlayerSide() == tree->GetCurrentBranchSide())
                 {
                     player1->Die();
-                }
+                }*/
                 float deltaTime = dt.asSeconds();
                 window.clear();
                 for ( auto i : gameObjectList )

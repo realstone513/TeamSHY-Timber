@@ -71,44 +71,110 @@ Tree::Tree(Texture& texTree,int gamemode, int is1P2P)
 	branches.resize(6);
 	for (int i = 0; i < branches.size(); i++)
 	{
-		if (i == 0)
+		if (this->GameMode == 1)
 		{
-			branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
-			branches[i]->SetSide(Sides::None);
+			if (i == 0)
+			{
+				branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+				branches[i]->SetSide(Sides::None, GameMode);
+			}
+			else
+			{
+				switch ((Sides)Utils::Range(0, 2))
+				{
+				case Sides::Left:
+					branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_L.png"));
+					branches[i]->SetSide(Sides::Left,GameMode);
+					break;
+				case Sides::Right:
+					branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_R.png"));
+					branches[i]->SetSide(Sides::Right, GameMode);
+					break;
+				case Sides::None:
+					branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
+					branches[i]->SetSide(Sides::None, GameMode);
+					break;
+				}
+			}
 		}
 		else
 		{
-			switch ((Sides)Utils::Range(0, 2))
+			if (i == 0)
 			{
-			case Sides::Left:
-				branches[i]= new Branch(RMI->GetTexture("graphics/1P_log(b)_L.png"));
-				branches[i]->SetSide(Sides::Left);
-				break;
-			case Sides::Right:
-				branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_R.png"));
-				branches[i]->SetSide(Sides::Right);
-				break;
-			case Sides::None:
-				branches[i] = new Branch(RMI->GetTexture("graphics/1P_log(b)_N.png"));
-				branches[i]->SetSide(Sides::None);
-				break;
+				branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_N.png"));
+				branches[i]->SetSide(Sides::None, GameMode);
+			}
+			else
+			{
+				switch ((Sides)Utils::Range(0, 2))
+				{
+				case Sides::Left:
+					branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_L.png"));
+					branches[i]->SetSide(Sides::Left, GameMode);
+					break;
+				case Sides::Right:
+					branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_R.png"));
+					branches[i]->SetSide(Sides::Right, GameMode);
+					break;
+				case Sides::None:
+					branches[i] = new Branch(RMI->GetTexture("graphics/2P_log(b)_N.png"));
+					branches[i]->SetSide(Sides::None, GameMode);
+					break;
+				}
 			}
 		}
 		branches[i]->SetOrigin(Origins::BC);
 	}
-
-	branchPosArr.resize(branches.size());
-	float x = 960;
-	float y = 750;
-	float offset = branches[0]->GetSize().y;
-	//	offset +=30;
-	for (int i = 0; i < branches.size(); ++i)
+	if (this->GameMode == 1)
 	{
-		branchPosArr[i] = Vector2f(x, y);
-		y -= offset;
-	}
+		branchPosArr.resize(branches.size());
+		float x = 960;
+		float y = 750;
+		float offset = branches[0]->GetSize().y;
+		//	offset +=30;
+		for (int i = 0; i < branches.size(); ++i)
+		{
+			branchPosArr[i] = Vector2f(x, y);
+			y -= offset;
+		}
 
-	UpdateBranches();
+		UpdateBranches();
+	}
+	else
+	{
+		if (is1P2P == 1)
+		{
+			branchPosArr.resize(branches.size());
+			float x = 480;
+			float y = 750;
+			float offset = branches[0]->GetSize().y;
+			//	offset +=30;
+			for (int i = 0; i < branches.size(); ++i)
+			{
+				branchPosArr[i] = Vector2f(x, y);
+				y -= offset;
+			}
+
+			UpdateBranches();
+		}
+		else
+		{
+			branchPosArr.resize(branches.size());
+			float x = 1440;
+			float y = 750;
+			float offset = branches[0]->GetSize().y;
+			//	offset +=30;
+			for (int i = 0; i < branches.size(); ++i)
+			{
+				branchPosArr[i] = Vector2f(x, y);
+				y -= offset;
+			}
+
+			UpdateBranches();
+		}
+
+	}
+	
 }
 
 Tree::~Tree()
@@ -167,11 +233,11 @@ void Tree::Update(float dt)
 		{
 			if (InputManager::GetKeyDown(Keyboard::A))
 			{
-				ShowLogEffect(branches[currentBranche]->GetSide());
+				ShowLogEffect(branches[currentBranche]->GetSide(), Sides::Left);
 			}
 			if (InputManager::GetKeyDown(Keyboard::D))
 			{
-				ShowLogEffect(branches[currentBranche]->GetSide());
+				ShowLogEffect(branches[currentBranche]->GetSide(), Sides::Right);
 			}
 		}
 		else
@@ -194,20 +260,20 @@ void Tree::Update(float dt)
 			{
 				if (InputManager::GetKeyDown(Keyboard::A))
 				{
-					ShowLogEffect(Sides::Left);
+					ShowLogEffect(branches[currentBranche]->GetSide(), Sides::Left);
 				}
 				if (InputManager::GetKeyDown(Keyboard::D))
 				{
-					ShowLogEffect(Sides::Right);
+					ShowLogEffect(branches[currentBranche]->GetSide(), Sides::Right);
 				}
 			}
 			else
 			{
-				if (side == Sides::Left && InputManager::GetKeyUp(Keyboard::A))
+				if (InputManager::GetKeyUp(Keyboard::A))
 				{
 					isChop = false;
 				}
-				if (side == Sides::Right && InputManager::GetKeyUp(Keyboard::D))
+				if (InputManager::GetKeyUp(Keyboard::D))
 				{
 					isChop = false;
 				}
@@ -220,20 +286,20 @@ void Tree::Update(float dt)
 			{
 				if (InputManager::GetKeyDown(Keyboard::Left))
 				{
-					ShowLogEffect(Sides::Left);
+					ShowLogEffect(branches[currentBranche]->GetSide(), Sides::Left);
 				}
 				if (InputManager::GetKeyDown(Keyboard::Right))
 				{
-					ShowLogEffect(Sides::Right);
+					ShowLogEffect(branches[currentBranche]->GetSide(), Sides::Right);
 				}
 			}
 			else
 			{
-				if (side == Sides::Left && InputManager::GetKeyUp(Keyboard::Left))
+				if (InputManager::GetKeyUp(Keyboard::Left))
 				{
 					isChop = false;
 				}
-				if (side == Sides::Right && InputManager::GetKeyUp(Keyboard::Right))
+				if (InputManager::GetKeyUp(Keyboard::Right))
 				{
 					isChop = false;
 				}
@@ -264,10 +330,10 @@ void Tree::SetFlipX(bool flip)
 }
 
 
-void Tree::ShowLogEffect(Sides side)
+void Tree::ShowLogEffect(Sides branchside,Sides playerside)
 {
 	isChop = true;
-	this->side = side;
+	this->side = branchside;
 	if (unuseLogs[(int)side].empty())
 		return;
 
@@ -277,10 +343,10 @@ void Tree::ShowLogEffect(Sides side)
 
 	Vector2f force;
 	int forceRanX = 300; //Utils::Range(300, 800);
-	force.x = side == Sides::Left ? forceRanX : -forceRanX;
+	force.x = playerside == Sides::Left ? forceRanX : -forceRanX;
 	force.y = -800;
 	float aForceRan = 360; // Utils::Range(360, 1800);
-	float aForce = side == Sides::Left ? aForceRan : -aForceRan;
+	float aForce = playerside == Sides::Left ? aForceRan : -aForceRan;
 
 	Vector2f pos;
 	
@@ -303,7 +369,7 @@ void Tree::UpdateBranches()
 		branches[index]->SetPosition(branchPosArr[i]);
 		if (i == branches.size() - 1)
 		{
-			branches[index]->SetSide((Sides)Utils::Range(0, 2));
+			branches[index]->SetSide((Sides)Utils::Range(0, 2), GameMode);
 		}
 	}
 }
