@@ -1,5 +1,4 @@
 #include "Tree.h"
-#include "Player.h"
 #include "InputManager.h"
 #include "EffectLog.h"
 
@@ -309,7 +308,7 @@ void Tree::UpdateBranches()
 	}
 }
 
-Sides Tree::CurrentBranchSide()
+Sides Tree::GetCurrentBranchSide()
 {
 	return branches[currentBranche]->GetSide();
 }

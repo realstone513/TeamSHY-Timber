@@ -96,11 +96,6 @@ void Player::Update(float dt)
 			}
 		}
 	}
-	if (side == currentbranchside)
-	{
-		Die();
-		isChop = false;
-	}
 }
 
 void Player::Draw(RenderWindow& window)
@@ -136,7 +131,8 @@ void Player::Die()
 	//soundDeath.play();
 }
 
-Sides Player::CurrentBranchSide(Tree* side)
+Sides Player::GetPlayerSide()
 {
-	return currentbranchside =side->CurrentBranchSide();
+	return side;
 }
+

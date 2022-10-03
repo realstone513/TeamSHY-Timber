@@ -19,6 +19,7 @@ private:
 
 	Vector2f treePos;
 	vector<Vector2f> originalPos;
+
 public:
 	Player(Texture& player,int gamemode,int is1P2P,Vector2f treepos);
 	~Player();
@@ -29,9 +30,10 @@ public:
 	virtual void Draw(RenderWindow& window);
 	virtual void SetFlipX(bool flip);
 
-	Sides CurrentBranchSide(Tree* side);
 	void Chop(Sides side);
 	void Die();
 
 	bool GetisChop();
+	Sides GetPlayerSide();
+
 };

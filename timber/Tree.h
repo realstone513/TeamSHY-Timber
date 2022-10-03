@@ -24,7 +24,11 @@ private:
 	vector<Branch*> branches;
 	vector<Vector2f> branchPosArr;
 	int currentBranche;
+	
+
 public:
+	
+
 	Tree(Texture& texTree,int gamemode, int is1P2P);
 	~Tree();
 	virtual void Init() override;
@@ -35,5 +39,5 @@ public:
 
 	void ShowLogEffect(Sides side);
 	void UpdateBranches();
-	Sides CurrentBranchSide();
+	Sides GetCurrentBranchSide();
 };
