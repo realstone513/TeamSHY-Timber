@@ -18,7 +18,7 @@ private:
 	bool isChop;
 
 	int score;
-
+	bool scoreStatus;
 	Vector2f treePos;
 	vector<Vector2f> originalPos;
 
@@ -39,4 +39,5 @@ public:
 	Sides GetPlayerSide();
 
 	int GetScore();
+	void SetScoreStatus();
 };

@@ -35,6 +35,7 @@ void Player::Init()
     SetFlipX(side == Sides::Left);
     SetPosition(originalPos[(int)side]);
     score = 0;
+    scoreStatus = true;
 }
 
 void Player::Release()
@@ -52,12 +53,22 @@ void Player::Update(float dt)
             {
                 //SetPosition({ 300,1000 });
                 Chop(Sides::Left);
+                if ( !scoreStatus )
+                {
+                    score -= 20;
+                    scoreStatus = true;
+                }
                 score += 10;
             }
             if (InputManager::GetKeyDown(Keyboard::D))
             {
                 //SetPosition({ 500,1000 });
                 Chop(Sides::Right);
+                if ( !scoreStatus )
+                {
+                    score -= 20;
+                    scoreStatus = true;
+                }
                 score += 10;
             }
         }
@@ -80,11 +91,21 @@ void Player::Update(float dt)
             if (InputManager::GetKeyDown(Keyboard::Left))
             {
                 Chop(Sides::Left);
+                if ( !scoreStatus )
+                {
+                    score -= 20;
+                    scoreStatus = true;
+                }
                 score += 10;
             }
             if (InputManager::GetKeyDown(Keyboard::Right))
             {
                 Chop(Sides::Right);
+                if ( !scoreStatus )
+                {
+                    score -= 20;
+                    scoreStatus = true;
+                }
                 score += 10;
             }
         }
@@ -144,3 +165,9 @@ int Player::GetScore()
 {
     return score;
 }
+
+void Player::SetScoreStatus()
+{
+    scoreStatus = false;
+}
+

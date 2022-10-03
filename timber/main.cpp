@@ -356,7 +356,7 @@ int main()
         if (PlayGame && (gamemode == 1 || gamemode == 2))
         {
             Vector2f timerBarSize(400, 80);
-            float duration = 4.0f;
+            float duration = 40.0f;
             float timer = duration;
             bool isGameover =true;
             um.SetRectangleUI("timer Bar", timerBarSize, Color::Red);
@@ -495,13 +495,11 @@ int main()
                     }
                     if (player1->GetPlayerSide() == tree1->GetCurrentBranchSide())
                     {
-                        player1->Die();
-                        isGameover = false;
+                        player1->SetScoreStatus();
                     }
                     if (player2->GetPlayerSide() == tree2->GetCurrentBranchSide())
                     {
-                        player2->Die();
-                        isGameover = false;
+                        player2->SetScoreStatus();
                     }
                     float deltaTime = dt.asSeconds();
                     window.clear();
