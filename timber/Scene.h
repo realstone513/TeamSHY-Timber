@@ -6,8 +6,6 @@
 #include "Player.h"
 #include "Tree.h"
 
-//#include "SpriteGameObject.h"
-
 using namespace sf;
 using namespace std;
 

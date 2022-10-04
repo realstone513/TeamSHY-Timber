@@ -10,7 +10,7 @@ int main()
 		if (gm.GetScene()->Loop())
 			return 0;
 		gm.ReleaseScene();
-
+		
 		SelectGameMode* sgm = new SelectGameMode();
 		gm.PlayScene(sgm);
 		if (gm.GetScene()->Loop())
