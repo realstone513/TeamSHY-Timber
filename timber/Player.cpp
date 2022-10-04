@@ -153,7 +153,7 @@ void Player::Update(float dt)
 void Player::Draw(RenderWindow& window)
 {
     SpriteGameObject::Draw(window);
-    if ( isChop )
+    if (isChop)
     {
         window.draw(texAxe);
     }
@@ -198,6 +198,7 @@ void Player::Die()
     isAlive = false;
     isChop = true;
     sprite.setTexture(PRMI->GetTexture("graphics/rip.png"), true);
+    texAxe.setScale(0, 0);
     SetFlipX(false);
     Utils::SetOrigin(sprite, Origins::BC);
 }
